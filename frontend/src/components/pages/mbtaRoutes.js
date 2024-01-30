@@ -20,10 +20,10 @@ function Routes() {
   }, []);
 
   return (
-    <Container className="mt-4"> {/* Add margin to the top of the container */}
+    <Container className="mt-4"> 
   <div>
     <h1 className="text-center">MBTA Routes Information</h1>
-    <p className="text-center">Explore details about different MBTA routes, including descriptions and direction destinations.</p>
+    <p className="text-center">Explore details about different MBTA routes.</p>
   </div>
 
   <Row xs={1} md={2} lg={3} xl={4} className="g-4">
@@ -34,15 +34,21 @@ function Routes() {
           outline
           color="info"
           className="mb-3 mx-auto"
-          style={{ maxWidth: "400px" }}
+          style={{ maxWidth:'100', backgroundColor:'#ADD8E6' }}
         >
           <Card.Body>
-            <Card.Title>{route.attributes.long_name}</Card.Title>
+            <Card.Title><strong>{route.attributes.direction_destinations.join(', ')}</strong></Card.Title>
             <Card.Text>
               <strong>Description:</strong> {route.attributes.description}
             </Card.Text>
             <Card.Text>
-              <strong>Direction Destinations:</strong> {route.attributes.direction_destinations.join(', ')}
+              <strong>Directions:</strong> {route.attributes.direction_names.join(', ')}
+            </Card.Text>
+            <Card.Text>
+              <strong>Line:</strong> {route.attributes.long_name}
+            </Card.Text>
+            <Card.Text>
+              <strong>ID Number:</strong> {route.attributes.short_name}
             </Card.Text>
           </Card.Body>
         </Card>
