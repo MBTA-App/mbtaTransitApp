@@ -22,14 +22,15 @@ export default function Navbar() {
   return (
     <ReactNavbar bg='dark' variant='dark'>
       <Container>
-        <Nav className='me-auto'>
+        <Nav className='align-content-end'>
           {/* <Nav.Link href='/'>Start</Nav.Link> */}
           <Nav.Link href='/home'>Home</Nav.Link>
+          <Nav.Link href='/mbtaTracker'>MBTA Tracker</Nav.Link>
           <Nav.Link href='/mbtaAlert'>MBTA Alerts</Nav.Link>
           <Nav.Link href='/mbtaRoutes'>MBTA Routes</Nav.Link>
-          <NavDropdown title='Profile' id='basic-nav-dropdown'>
-            <NavDropdown.Item href='home'>Home</NavDropdown.Item>
-            <NavDropdown.Item href='/privateUserProfile'>Profile</NavDropdown.Item>
+          <NavDropdown className='' title='Profile' id='basic-nav-dropdown'>
+            <NavDropdown.Item href='/profile'>Profile</NavDropdown.Item>
+            <NavDropdown.Item href='/privateUserProfile'>Settings</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Container>
