@@ -70,4 +70,4 @@ const PrivateUserProfile = () => {
   )
 }
 
-export default PrivateUserProfile
+export default PrivateUserProfile 

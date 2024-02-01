@@ -1,36 +1,79 @@
-import React from 'react'
-import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import getUserInfo from "../../utilities/decodeJwt";
 
 const Landingpage = () => {
   const continueWithoutSignIn = () => {
     // Add your logic for continuing without signing in
-    console.log('Continue without signing in')
+    console.log("Continue without signing in");
+  };
+  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    setUser(getUserInfo());
+  }, []);
+
+  const handleLogout = async () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
+  if (user) {
+    return (
+      <div className="d-flex flex-column align-items-center justify-content-center vh-100">
+        <div>
+          <h2 className="display-1 mt-4 align-self-start">
+            Welcome to MBTA Transit App.
+          </h2>
+        </div>
+        <div className="mt-4">
+          <h2>You are logged in.</h2>
+        </div>
+        <div>
+          <Button onClick={handleLogout}>Logout</Button>
+        </div>
+      </div>
+    );
   }
+  if (!user) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <Card
+          style={{ width: "50%", height: "50%" }}
+          className="text-center bg-dark shadow-xl rounded border"
+        >
+          <Card.Body className="text-center d-flex flex-column align-items-center justify-content-center">
+            <Card.Title>MBTA Transit App</Card.Title>
+            <Card.Subtitle className="mb-2 text-white display-5 ">
+              Welcome
+            </Card.Subtitle>
+            <Card.Text className="mt-4">
+              <a href="/login" className="btn btn-primary mx-4">
+                Login
+              </a>
+            </Card.Text>
+            <Card.Text>
+              <a href="/signup" className="btn btn-primary mx-4">
+                Sign Up
+              </a>
+            </Card.Text>
+            <Button
+              href="#"
+              variant="link"
+              className="mt-3"
+              onClick={continueWithoutSignIn}
+            >
+              Continue without signing in
+            </Button>
+          </Card.Body>
+        </Card>
+      </div>
+    );
+  }
+};
 
-  return (
-    <div className='d-flex justify-content-center align-items-center vh-100'>
-      <Card style={{ width: '50%', height: '50%' }} className='text-center bg-dark shadow-xl rounded border'>
-        <Card.Body className='text-center d-flex flex-column align-items-center justify-content-center'>
-          <Card.Title>MBTA Transit App</Card.Title>
-          <Card.Subtitle className='mb-2 text-white display-5 '>Welcome</Card.Subtitle>
-          <Card.Text className='mt-4'>
-            <a href='/login' className='btn btn-primary mx-4'>
-              Login
-            </a>
-          </Card.Text>
-          <Card.Text>
-            <a href='/signup' className='btn btn-primary mx-4'>
-              Sign Up
-            </a>
-          </Card.Text>
-          <Button href='#' variant='link' className='mt-3' onClick={continueWithoutSignIn}>
-            Continue without signing in
-          </Button>
-        </Card.Body>
-      </Card>
-    </div>
-  )
-}
-
-export default Landingpage
+export default Landingpage;

@@ -10,6 +10,10 @@ const HomePage = () => {
     localStorage.removeItem('accessToken')
     return navigate('/')
   }
+  const handleLogout = async () => {
+    localStorage.clear()
+    navigate('/')
+  }
 
   useEffect(() => {
     setUser(getUserInfo())
