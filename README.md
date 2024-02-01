@@ -1,3 +1,9 @@
+# .env
+Be sure to create a .env with DB_URL and ACCESS_TOKEN_SECRET in /backend/server
+
+
+
+
 # mern-user-skeleton
 This MERN stack implementation creates a small web application that lets users register, login, view a home page, and logout. 
 
