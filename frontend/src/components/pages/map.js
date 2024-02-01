@@ -1,47 +1,66 @@
 import React, { useEffect, useState } from "react";
-import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import axios from "axios";
+import "leaflet/dist/leaflet.css";
 
 const LeafletMap = () => {
-  const [trainLocations, setTrainLocations] = useState([]);
+  const [trainData, setTrainData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    // Fetch live train data from the MBTA API
+    const fetchTrainData = async () => {
       try {
         const response = await axios.get("https://api-v3.mbta.com/vehicles");
-        const { data } = response;
-        setTrainLocations(data.data);
+        setTrainData(response.data.data);
       } catch (error) {
-        console.error("Error fetching train locations:", error);
+        console.error("Error fetching train data:", error);
       }
     };
 
-    // Fetch data initially and set up interval for periodic updates
-    fetchData();
-    const intervalId = setInterval(fetchData, 60000); // Update every minute
+    // Fetch train data every 5 seconds (adjust as needed)
+    const intervalId = setInterval(() => {
+      fetchTrainData();
+    }, 2000);
+
+    // Initial fetch
+    fetchTrainData();
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
+  // Define subway icon
+  const subwayIcon = new L.Icon({
+    iconUrl: process.env.PUBLIC_URL + "/train.png",
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+  });
+
   return (
     <MapContainer
-      center={[42.3601, -71.0589]}
+      style={{ height: "500px", width: "100%" }}
+      center={[42.3601, -71.0589]} // Set a default center
       zoom={13}
-      style={{ width: "100%", height: "100%" }}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; OpenStreetMap contributors"
+        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      {trainLocations.map((train) => (
+
+      {/* Map through trainData to create markers */}
+      {trainData.map((train) => (
         <Marker
           key={train.id}
           position={[train.attributes.latitude, train.attributes.longitude]}
+          icon={subwayIcon}
         >
-          <Popup>{train.attributes.label}</Popup>
+          <Popup>
+            Train ID: {train.id}
+            <br />
+            Status: {train.attributes.current_status}
+          </Popup>
         </Marker>
       ))}
     </MapContainer>
