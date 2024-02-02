@@ -36,6 +36,7 @@ const Trackerpage = () => {
           <div className='mt-4 mb-4'>
             <button
               style={routeTypeFilter === null ? activeButtonStyle : buttonStyle}
+              //set to null to show all route types
               onClick={() => handleFilterClick(null)}
             >
               All
