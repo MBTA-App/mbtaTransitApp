@@ -38,7 +38,7 @@ function Stations() {
                   backgroundColor: '#ADD8E6',
                   transition: 'background-color 0.3s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#87CEFA')}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#00d517')}
                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ADD8E6')}
               >
                 <Card.Body>
