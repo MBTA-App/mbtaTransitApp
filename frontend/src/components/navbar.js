@@ -28,6 +28,8 @@ export default function Navbar() {
           <Nav.Link href='/mbtaTracker'>MBTA Tracker</Nav.Link>
           <Nav.Link href='/mbtaAlert'>MBTA Alerts</Nav.Link>
           <Nav.Link href='/mbtaRoutes'>MBTA Routes</Nav.Link>
+          <Nav.Link href='/mbtaStation'>MBTA Stations</Nav.Link>
+
           <NavDropdown className='' title='Profile' id='basic-nav-dropdown'>
             <NavDropdown.Item href='/profile'>Profile</NavDropdown.Item>
             <NavDropdown.Item href='/privateUserProfile'>Settings</NavDropdown.Item>
