@@ -1,6 +1,8 @@
-# .env
-Be sure to create a .env with DB_URL and ACCESS_TOKEN_SECRET in /backend/server
-
+# TO-DO
+- Implement reviews/rating on MBTA Stations page
+- Implement MBTA stops/stations on live tracker
+- Let users click directly from live tracking and go to the station id page
+- Show inbound/outbound on live tracker 
 
 
 

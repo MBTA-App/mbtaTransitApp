@@ -38,7 +38,7 @@ function Stations() {
                   backgroundColor: '#ADD8E6',
                   transition: 'background-color 0.3s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#14e367')}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#87CEFA')}
                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#ADD8E6')}
               >
                 <Card.Body>
@@ -46,7 +46,10 @@ function Stations() {
                     <strong>{station.attributes.name}</strong>
                   </Card.Title>
                   <Card.Text>
-                    <strong>Line:</strong> {station.attributes.address || 'Not available'}
+                    <strong>Line:</strong>{' '}
+                    {station.attributes.description
+                      ? station.attributes.description.split('-')[1]?.trim()
+                      : 'Not available'}
                   </Card.Text>
                   <Card.Text>
                     <strong>Location:</strong> {station.attributes.address || 'Not available'}

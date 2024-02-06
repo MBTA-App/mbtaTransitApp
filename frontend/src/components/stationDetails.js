@@ -27,7 +27,10 @@ function StationDetails() {
   return (
     <div>
       <div>
-        <h1>{station.attributes.platform_name}</h1>
+        <h1>
+          {station.attributes.platform_name} {'- '}
+          {station.attributes.description ? station.attributes.description.split('-')[1]?.trim() : 'Not available'}
+        </h1>
         <p>
           <strong>Address:</strong> {station.attributes.address}
         </p>
