@@ -1,39 +1,42 @@
-import React, { useEffect, useState } from 'react'
-import { Card } from 'react-bootstrap'
-import LeafletMap from './map' // Replace with the actual path to your LeafletMap component
+import React, { useEffect, useState } from "react";
+import { Card, Container } from "react-bootstrap";
+import LeafletMap from "./map"; // Replace with the actual path to your LeafletMap component
 
 const Trackerpage = () => {
-  const [routeTypeFilter, setRouteTypeFilter] = useState(null)
+  const [routeTypeFilter, setRouteTypeFilter] = useState(null);
 
-  const handleFilterClick = routeType => {
-    setRouteTypeFilter(routeType)
-    console.log('Route Type: ' + routeType)
-  }
+  const handleFilterClick = (routeType) => {
+    setRouteTypeFilter(routeType);
+    console.log("Route Type: " + routeType);
+  };
 
-  console.log('Current Route Type Filter: ', routeTypeFilter) // Log the current routeTypeFilter
+  console.log("Current Route Type Filter: ", routeTypeFilter); // Log the current routeTypeFilter
 
   const buttonStyle = {
-    backgroundColor: '#3498db',
-    color: 'white',
-    padding: '10px',
-    margin: '5px',
-    border: 'none',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-    cursor: 'pointer',
-  }
+    backgroundColor: "#3498db",
+    color: "white",
+    padding: "10px",
+    margin: "5px",
+    border: "none",
+    borderRadius: "8px",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.9)",
+    cursor: "pointer",
+  };
 
   const activeButtonStyle = {
     ...buttonStyle,
-    boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 1)',
-  }
+    boxShadow: "inset 0 2px 2px rgba(0, 0, 0, 1)",
+  };
 
   return (
-    <div className='d-flex justify-content-center align-items-center vh-100'>
-      <Card style={{ width: '90%', height: '90%' }} className='text-center bg-dark shadow-xl rounded border'>
-        <Card.Body className='d-flex flex-column align-items-center justify-content-center text-light'>
-          <Card.Title className='display-4'>Live Tracker</Card.Title>
-          <div className='mt-4 mb-4'>
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <Card
+        style={{ width: "90%", height: "90%" }}
+        className="text-center bg-white shadow-xl rounded border-0"
+      >
+        <Card.Body className="d-flex flex-column align-items-center justify-content-center text-light">
+          <Card.Title className="display-4 text-black">Live Tracker</Card.Title>
+          <div className="mt-4 mb-4">
             <button
               style={routeTypeFilter === null ? activeButtonStyle : buttonStyle}
               //set to null to show all route types
@@ -73,11 +76,12 @@ const Trackerpage = () => {
             </button>
             {/* Add more buttons for other route types if needed */}
           </div>
+
           <LeafletMap routeTypeFilter={routeTypeFilter} />
         </Card.Body>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Trackerpage
+export default Trackerpage;
