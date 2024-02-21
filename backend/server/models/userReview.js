@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const userReviewSchema = new mongoose.Schema(
   {
+    stationId: {
+      type: Number, // or whatever type your stationId is
+      required: true,
+    },
     user: {
       type: String,
       ref: "User", // Reference to the User model

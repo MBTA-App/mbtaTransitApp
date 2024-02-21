@@ -17,14 +17,16 @@ function StationDetails() {
   const [submitStatus, setSubmitStatus] = useState(null); // New state for submit status
 
   const [reviewData, setReviewData] = useState({
-    rating: 0, // Default value, update based on your needs
+    //default values
+    rating: 0,
     recommendation: "",
     description: "",
     user: "",
+    stationId: stationId,
   });
 
   useEffect(() => {
-    // Fetch user information from the decoded JWT
+    // Fetch user info
     const userInfo = getUserInfo();
 
     // Set the initial 'user' field in the review data
@@ -43,6 +45,7 @@ function StationDetails() {
     try {
       // Assuming you have a reviews endpoint for submitting reviews
       await axios.post(`http://localhost:8081/userReview/reviews`, {
+        stationId: stationId, // Add stationId to associate the review with the station
         ...reviewData,
       });
 
@@ -76,7 +79,7 @@ function StationDetails() {
       try {
         // Assuming you have an endpoint for fetching reviews
         const reviewsResult = await axios.get(
-          `http://localhost:8081/userReview/getReviews`
+          `http://localhost:8081/userReview/getReviews/${stationId}`
         );
         setReviews(reviewsResult.data); // Assuming reviews data is an array
       } catch (error) {
@@ -168,7 +171,7 @@ function StationDetails() {
                   >
                     <option>Select one</option>
                     <option>Recommended</option>
-                    <option>Not recommended</option>
+                    <option>Not Recommended</option>
                   </select>
                   <label for="exampleFormControlInput1" class="col-form-label">
                     Give a brief description of why:
