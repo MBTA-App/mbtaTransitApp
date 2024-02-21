@@ -221,6 +221,8 @@ function StationDetails() {
                       <p>Rating: {review.rating}</p>
                       <p>Recommendation: {review.recommendation}</p>
                       <p>Description: {review.description}</p>
+                      <p>Time Posted: {review.date}</p>
+
                       <hr />
                     </div>
                   ))}
