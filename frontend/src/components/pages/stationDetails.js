@@ -190,7 +190,7 @@ function StationDetails() {
                     type="submit"
                     onClick={submitReview}
                     style={{ buttonStyling }}
-                    className="mt-2 col-1"
+                    className="mt-2 col-sm-3 col-lg-1 col-md-2"
                   >
                     Submit
                   </Button>
@@ -221,8 +221,17 @@ function StationDetails() {
                       <p>Rating: {review.rating}</p>
                       <p>Recommendation: {review.recommendation}</p>
                       <p>Description: {review.description}</p>
-                      <p>Time Posted: {review.date}</p>
-
+                      <p>
+                        Time Posted:{" "}
+                        {new Date(review.date).toLocaleString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          second: "numeric",
+                        })}
+                      </p>
                       <hr />
                     </div>
                   ))}
