@@ -23,6 +23,6 @@ function Map({ latitude, longitude, stationName }) {
       </Marker>
     </MapContainer>
   );
-}
+}                        
 
 export default Map;

@@ -2,15 +2,13 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import Container from 'react-bootstrap/Container'
-import Button from 'react-bootstrap/Button'
-
-import { api } from '../../utilities/api'
-import Map from '../trainMap'
+import Map from '../../trainMap'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import getUserInfo from '../../utilities/decodeJwt'
+import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+import getUserInfo from '@/utilities/decodeJwt'
 
 function StationDetails() {
   const { stationId } = useParams() // Extract stationId from URL params
@@ -61,25 +59,6 @@ function StationDetails() {
     }
   }
 
-  // const deleteReview = async e => {
-  //   e.preventDefault()
-  //   try {
-  //     // Assuming you have a reviews endpoint for submitting reviews
-  //     await axios.delete(`http://localhost:8081/userReview/deleteReviews/${_id}`, {
-  //       id: stationId, // Add stationId to associate the review with the station
-  //       ...reviewData,
-  //     })
-
-  //     // Optionally, you can perform any additional actions after a successful submission
-  //     // For example, updating the UI or navigating to a different page
-  //     console.log('Review submitted successfully!')
-  //     setSubmitStatus('Success')
-  //   } catch (error) {
-  //     console.error('Error submitting review:', error)
-  //     setSubmitStatus('Error')
-  //   }
-  // }
-
   let buttonStyling = {
     background: '#fffff',
     borderStyle: 'none',
@@ -97,7 +76,7 @@ function StationDetails() {
     async function fetchReviews() {
       try {
         // Assuming you have an endpoint for fetching reviews
-        const reviewsResult = await api.get(`/userReview/getReviews/${stationId}`)
+        const reviewsResult = await axios.get(`http://localhost:8081/userReview/getReviews/${stationId}`)
         setReviews(reviewsResult.data) // Assuming reviews data is an array
       } catch (error) {
         console.error('Error fetching reviews:', error)
@@ -108,24 +87,24 @@ function StationDetails() {
     fetchStationDetails()
   }, [stationId])
 
-  // const [basic] = useState([
-  //   {
-  //     tooltip: 'Very Bad',
-  //   },
-  //   {
-  //     tooltip: 'Poor',
-  //   },
-  //   {
-  //     tooltip: 'Ok',
-  //     choosed: true,
-  //   },
-  //   {
-  //     tooltip: 'Good',
-  //   },
-  //   {
-  //     tooltip: 'Excellent',
-  //   },
-  // ])
+  const [basic] = useState([
+    {
+      tooltip: 'Very Bad',
+    },
+    {
+      tooltip: 'Poor',
+    },
+    {
+      tooltip: 'Ok',
+      choosed: true,
+    },
+    {
+      tooltip: 'Good',
+    },
+    {
+      tooltip: 'Excellent',
+    },
+  ])
 
   if (!station) {
     return <div className='d-flex justify-content-center align-content-center'>Loading...</div>

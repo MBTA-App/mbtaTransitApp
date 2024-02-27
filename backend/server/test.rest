@@ -18,6 +18,16 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:8080/reviews/deleteReviews/:stationId
+Content-Type: application/json 
+
+{
+    "username" : "tochiamanze",
+    "stationId" : "70155"
+}
+
+###
 GET http://localhost:8081/user/getAll
 Content-Type: application/json
 
