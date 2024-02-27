@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const userReviewSchema = new mongoose.Schema(
   {
@@ -8,16 +8,12 @@ const userReviewSchema = new mongoose.Schema(
     },
     user: {
       type: String,
-      ref: 'User', // Reference to the User model
-      required: true,
-    },
-    rating: {
-      type: Number,
+      ref: "User", // Reference to the User model
       required: true,
     },
     recommendation: {
       type: String,
-      enum: ['Recommended', 'Not Recommended'], // Add other possible values
+      enum: ["Recommended", "Not Recommended"], // Add other possible values
       required: true,
     },
     description: {
@@ -29,7 +25,7 @@ const userReviewSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: 'userReviews' }
-)
+  { collection: "userReviews" }
+);
 
-module.exports = mongoose.model('UserReview', userReviewSchema)
+module.exports = mongoose.model("UserReview", userReviewSchema);

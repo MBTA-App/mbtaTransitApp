@@ -58,5 +58,28 @@ Content-Type: application/json
     "userId" : "634edb2a16710b2cda6fb370"
 }
 
+GET  http://localhost:8081/userFavorites/
+Content-Type: application/json 
+
+{
+    "userId" : "634edb2a16710b2cda6fb370"
+}
+
+###
+GET  http://localhost:8081/userFavorites/getFavorites/
+Content-Type: application/json 
+
+{
+    "userId" : "634edb2a16710b2cda6fb370"
+}
+
+###
+GET  http://localhost:8081/userReviews/getReviews/
+Content-Type: application/json 
+
+{
+    "userId" : ""
+}
+
 ###
 POST  http://localhost:8081/user/deleteAll

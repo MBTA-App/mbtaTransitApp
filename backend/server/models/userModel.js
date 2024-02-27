@@ -13,10 +13,14 @@ const newUserSchema = new mongoose.Schema(
       required: true,
       label: "email",
     },
+    favoriteStations: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Station",
+    },
     password: {
       required: true,
       type: String,
-      min : 8
+      min: 8,
     },
     date: {
       type: Date,
@@ -26,4 +30,4 @@ const newUserSchema = new mongoose.Schema(
   { collection: "users" }
 );
 
-module.exports = mongoose.model('users', newUserSchema)
+module.exports = mongoose.model("users", newUserSchema);

@@ -108,6 +108,7 @@ function StationDetails() {
     fetchStationDetails()
   }, [stationId])
 
+<<<<<<< Updated upstream
   // const [basic] = useState([
   //   {
   //     tooltip: 'Very Bad',
@@ -126,6 +127,36 @@ function StationDetails() {
   //     tooltip: 'Excellent',
   //   },
   // ])
+=======
+  // const handleDeleteReview = async (reviewId, userId) => {
+  //   try {
+  //     await axios.delete(`/api/userReviews/deleteReview/${reviewId}/${userId}`);
+  //     // After successful deletion, update the reviews
+  //     fetchReviews();
+  //   } catch (error) {
+  //     console.error("Error deleting review:", error);
+  //   }
+  // };
+
+  const [basic] = useState([
+    {
+      tooltip: "Very Bad",
+    },
+    {
+      tooltip: "Poor",
+    },
+    {
+      tooltip: "Ok",
+      choosed: true,
+    },
+    {
+      tooltip: "Good",
+    },
+    {
+      tooltip: "Excellent",
+    },
+  ]);
+>>>>>>> Stashed changes
 
   if (!station) {
     return <div className='d-flex justify-content-center align-content-center'>Loading...</div>
@@ -215,18 +246,27 @@ function StationDetails() {
             <div className='text-center'>
               <div>
                 <h1>View Reviews</h1>
+<<<<<<< Updated upstream
                 <Card className='border'>
                   {reviews
                     .slice() // Create a copy of the array to avoid mutating the original
                     .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort reviews by date in descending order
                     .map(review => (
                       <div className='mt-2' key={review._id}>
+=======
+                <Card className="border">
+                  {reviews
+                    .sort((a, b) => new Date(b.date) - new Date(a.date)) // sort by date in descending order
+                    .map((review) => (
+                      <div className="mt-2" key={review._id}>
+>>>>>>> Stashed changes
                         {/* Display each review here */}
                         <p>User: {review.user}</p>
                         <p>Rating: {review.rating}</p>
                         <p>Recommendation: {review.recommendation}</p>
                         <p>Description: {review.description}</p>
                         <p>
+<<<<<<< Updated upstream
                           Time Posted:{' '}
                           {new Date(review.date).toLocaleString('en-US', {
                             year: 'numeric',
@@ -243,6 +283,25 @@ function StationDetails() {
                             Delete
                           </Button>
                         )}
+=======
+                          Time Posted:{" "}
+                          {new Date(review.date).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            second: "numeric",
+                          })}
+                        </p>
+                        {/* <button
+                          onClick={() =>
+                            handleDeleteReview(review._id, review.userId)
+                          }
+                        >
+                          Delete
+                        </button> */}
+>>>>>>> Stashed changes
                         <hr />
                       </div>
                     ))}
