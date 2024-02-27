@@ -17,6 +17,7 @@ function StationDetails() {
   const [station, setStation] = useState(null)
   const [reviews, setReviews] = useState([]) // New state for reviews
   const [submitStatus, setSubmitStatus] = useState(null) // New state for submit status
+  const [userInfo, setUserInfo] = useState(null) // New state for user information
 
   const [reviewData, setReviewData] = useState({
     //default values
@@ -29,12 +30,14 @@ function StationDetails() {
 
   useEffect(() => {
     // Fetch user info
-    const userInfo = getUserInfo()
+    const currentUserInfo = getUserInfo()
+
+    setUserInfo(currentUserInfo)
 
     // Set the initial 'user' field in the review data
     setReviewData(prevData => ({
       ...prevData,
-      user: userInfo ? userInfo.username : '',
+      user: currentUserInfo ? currentUserInfo.username : '',
     }))
   }, [])
 
@@ -61,24 +64,21 @@ function StationDetails() {
     }
   }
 
-  // const deleteReview = async e => {
-  //   e.preventDefault()
-  //   try {
-  //     // Assuming you have a reviews endpoint for submitting reviews
-  //     await axios.delete(`http://localhost:8081/userReview/deleteReviews/${_id}`, {
-  //       id: stationId, // Add stationId to associate the review with the station
-  //       ...reviewData,
-  //     })
+  const deleteReview = async (e, reviewId) => {
+    e.preventDefault()
+    try {
+      // Assuming you have a reviews endpoint for deleting reviews
+      await axios.delete(`http://localhost:8081/userReview/deleteReviews/${reviewId}`)
 
-  //     // Optionally, you can perform any additional actions after a successful submission
-  //     // For example, updating the UI or navigating to a different page
-  //     console.log('Review submitted successfully!')
-  //     setSubmitStatus('Success')
-  //   } catch (error) {
-  //     console.error('Error submitting review:', error)
-  //     setSubmitStatus('Error')
-  //   }
-  // }
+      // Optionally, you can perform any additional actions after a successful deletion
+      // For example, updating the UI or reloading the reviews
+      console.log('Review deleted successfully!')
+      setSubmitStatus('Success')
+    } catch (error) {
+      console.error('Error deleting review:', error)
+      setSubmitStatus('Error')
+    }
+  }
 
   let buttonStyling = {
     background: '#fffff',
@@ -216,27 +216,36 @@ function StationDetails() {
               <div>
                 <h1>View Reviews</h1>
                 <Card className='border'>
-                  {reviews.map(review => (
-                    <div className='mt-2' key={review._id}>
-                      {/* Display each review here */}
-                      <p>User: {review.user}</p>
-                      <p>Rating: {review.rating}</p>
-                      <p>Recommendation: {review.recommendation}</p>
-                      <p>Description: {review.description}</p>
-                      <p>
-                        Time Posted:{' '}
-                        {new Date(review.date).toLocaleString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: 'numeric',
-                          second: 'numeric',
-                        })}
-                      </p>
-                      <hr />
-                    </div>
-                  ))}
+                  {reviews
+                    .slice() // Create a copy of the array to avoid mutating the original
+                    .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort reviews by date in descending order
+                    .map(review => (
+                      <div className='mt-2' key={review._id}>
+                        {/* Display each review here */}
+                        <p>User: {review.user}</p>
+                        <p>Rating: {review.rating}</p>
+                        <p>Recommendation: {review.recommendation}</p>
+                        <p>Description: {review.description}</p>
+                        <p>
+                          Time Posted:{' '}
+                          {new Date(review.date).toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            second: 'numeric',
+                          })}
+                        </p>
+
+                        {userInfo && userInfo.username === review.user && (
+                          <Button variant='danger' onClick={e => deleteReview(e, review._id)}>
+                            Delete
+                          </Button>
+                        )}
+                        <hr />
+                      </div>
+                    ))}
                 </Card>
               </div>
             </div>
