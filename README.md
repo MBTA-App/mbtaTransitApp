@@ -1,9 +1,4 @@
-# TO-DO
-- Implement reviews/rating on MBTA Stations page
-- Implement MBTA stops/stations on live tracker
-- Let users click directly from live tracking and go to the station id page
-- Show inbound/outbound on live tracker 
-- use leaflet map to show location of station/stops on MBTA Stations page
+
 
 
 
