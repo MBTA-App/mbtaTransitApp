@@ -4,6 +4,10 @@ const mongoose = require("mongoose");
 
 const thumbsSchema = new mongoose.Schema(
   {
+    reviewId: {
+      type: String,
+      label: 'reviewid',
+    },
     thumbsUp: {
       type: Number,
       default: 0,
