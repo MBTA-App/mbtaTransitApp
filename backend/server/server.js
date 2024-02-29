@@ -15,6 +15,7 @@ const favorites = require("./routes/userFavorite");
 const deleteFavorite = require("./routes/userDeleteFavorite");
 const getFavorites = require("./routes/userGetFavorite");
 const reviewRating = require("./routes/userReviewRating");
+const getAllReviews = require("./routes/userGetAllReviews");
 
 require("dotenv").config();
 const SERVER_PORT = 8081;
@@ -34,6 +35,7 @@ app.use("/userFav", deleteFavorite);
 app.use("/userReview", userGetReviews);
 app.use("/userReview", userReviews);
 app.use("/userReview", userDeleteReview);
+app.use("/userReview", getAllReviews);
 app.use("/reviewRating", reviewRating);
 
 app.listen(SERVER_PORT, (req, res) => {
