@@ -16,9 +16,6 @@ const deleteFavorite = require("./routes/userDeleteFavorite");
 const getFavorites = require("./routes/userGetFavorite");
 const reviewRating = require("./routes/userReviewRating");
 
-// const userDeleteReview = require('./route/userDeleteReview')
-// const userGetFavoriteStation = require('./route/userGetFavoriteStation')
-
 require("dotenv").config();
 const SERVER_PORT = 8081;
 
