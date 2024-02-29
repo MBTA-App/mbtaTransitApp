@@ -14,7 +14,7 @@ const userDeleteReview = require("./routes/userDeleteReview");
 const favorites = require("./routes/userFavorite");
 const deleteFavorite = require("./routes/userDeleteFavorite");
 const getFavorites = require("./routes/userGetFavorite");
-//const reviewRating = require('./routes/userReviewRating')
+const reviewRating = require("./routes/userReviewRating");
 
 // const userDeleteReview = require('./route/userDeleteReview')
 // const userGetFavoriteStation = require('./route/userGetFavoriteStation')
@@ -37,8 +37,7 @@ app.use("/userFav", deleteFavorite);
 app.use("/userReview", userGetReviews);
 app.use("/userReview", userReviews);
 app.use("/userReview", userDeleteReview);
-// app.use('/reviewRating', reviewRating)
-// app.use("/userFavorite", userFavorite)
+app.use("/reviewRating", reviewRating);
 
 app.listen(SERVER_PORT, (req, res) => {
   console.log(
