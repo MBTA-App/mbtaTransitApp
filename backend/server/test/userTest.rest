@@ -1,0 +1,18 @@
+POST http://localhost:8081/userReview/reviews
+Content-Type: application/json 
+
+{
+    "stationId" : "70051",
+    "recommendation" : "Not Recommended",
+    "description" : "kinda dirty",
+    "user": "jakebailes"
+}
+
+###
+
+GET http://localhost:8081/userReview/getReviews/70051
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:8081/userReview/deleteReviews/65de146f29a120d0a026aca6
