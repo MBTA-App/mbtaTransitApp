@@ -83,3 +83,21 @@ Content-Type: application/json
 
 ###
 POST  http://localhost:8081/user/deleteAll
+
+// REVIEW RATINGS TESTING
+###
+POST http://localhost:8081/reviewRating/rateReview/65df0e0ef26b5859cec39f1d
+Content-Type: application/json
+
+{
+  "thumbsUp": 1
+}
+
+### 
+GET http://localhost:8081/reviewRating/getRatings/65df0e0ef26b5859cec39f1d
+
+###
+GET http://localhost:8081/reviewRating/getAllRatings
+
+###
+DELETE http://localhost:8081/reviewRating/deleteRating/65df0e0ef26b5859cec39f1d
