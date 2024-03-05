@@ -13,6 +13,12 @@ router.get("/getReviews/:stationId", async (req, res) => {
     const reviews = await Review.find({ stationId });
 
     // Respond with the fetched reviews
+    if (reviews.length === 0) {
+      // If no reviews found, return a custom error message
+      return res
+        .status(404)
+        .json({ error: "Station ID does not exist or No reviews to display" });
+    }
     res.json(reviews);
   } catch (error) {
     console.error("Error retrieving reviews:", error);
