@@ -42,6 +42,12 @@ Content-Type: application/json
 GET http://localhost:8081/userFav/getFavorites/65a6e8d8eb6db7b9a7217a0c
 Content-Type: application/json 
 
+### 
+
+GET http://localhost:8081/userFav/getFavorites
+Content-Type: application/json 
+
+
 
 ### 
 DELETE http://localhost:8081/userFav/deleteFavorites/65a6e8d8eb6db7b9a7217a0c/70234
