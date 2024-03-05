@@ -50,6 +50,7 @@ Content-Type: application/json
 ###
 
 // REVIEW RATINGS TESTING
+###
 POST http://localhost:8081/reviewRating/rateReview/65df0e0ef26b5859cec39f1d
 Content-Type: application/json
 
@@ -59,3 +60,9 @@ Content-Type: application/json
 
 ### 
 GET http://localhost:8081/reviewRating/getRatings/65df0e0ef26b5859cec39f1d
+
+###
+GET http://localhost:8081/reviewRating/getAllRatings
+
+###
+DELETE http://localhost:8081/reviewRating/deleteRating/65df0e0ef26b5859cec39f1d
