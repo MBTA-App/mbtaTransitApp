@@ -1,20 +1,21 @@
 //submission
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const userReviewSchema = new mongoose.Schema(
   {
     stationId: {
       type: Number, // or whatever type your stationId is
       required: true,
+      index: true,
     },
     user: {
       type: String,
-      ref: "User", // Reference to the User model
+      ref: 'User', // Reference to the User model
       required: true,
     },
     recommendation: {
       type: String,
-      enum: ["Recommended", "Not Recommended"], // Add other possible values
+      enum: ['Recommended', 'Not Recommended'], // Add other possible values
       required: true,
     },
     description: {
@@ -26,7 +27,7 @@ const userReviewSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: "userReviews" }
-);
+  { collection: 'userReviews' }
+)
 
-module.exports = mongoose.model("UserReview", userReviewSchema);
+module.exports = mongoose.model('UserReview', userReviewSchema)
