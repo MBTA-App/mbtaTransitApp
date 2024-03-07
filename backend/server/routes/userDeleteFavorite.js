@@ -21,7 +21,7 @@ router.delete("/deleteFavorites/:userId/:stationId", async (req, res) => {
       });
     }
 
-    res.json({ message: "Review deleted successfully" });
+    res.json({ message: "Favorite Station deleted successfully" });
 
     // res.status(204).json({ message: 'Favorite station successfully deleted' })
   } catch (error) {
