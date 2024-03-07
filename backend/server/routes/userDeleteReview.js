@@ -1,5 +1,4 @@
 // routes/userGetReviews.js
-//submission
 const express = require("express");
 const router = express.Router();
 const Review = require("../models/userReview");
@@ -11,7 +10,7 @@ router.delete("/deleteReviews/:id", async (req, res) => {
     // Delete the review based on the provided _id
     await Review.deleteOne({ _id: id });
 
-    // Respond with a success message
+    // success
     res.json({ message: "Review deleted successfully" });
   } catch (error) {
     console.error("Error deleting review:", error);

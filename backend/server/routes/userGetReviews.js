@@ -4,17 +4,15 @@ const express = require("express");
 const router = express.Router();
 const Review = require("../models/userReview");
 
-// Get reviews for a specific station
+// Get reviews for a specific station by stationId
 router.get("/getReviews/:stationId", async (req, res) => {
   try {
     const { stationId } = req.params;
 
-    // Fetch reviews based on the provided stationId
     const reviews = await Review.find({ stationId });
 
-    // Respond with the fetched reviews
     if (reviews.length === 0) {
-      // If no reviews found, return a custom error message
+      // If no reviews found, return error
       return res
         .status(404)
         .json({ error: "Station ID does not exist or No reviews to display" });

@@ -7,7 +7,7 @@ const Review = require("../models/userReview");
 // Get all reviews
 router.get("/getReviews", async (req, res) => {
   try {
-    // Fetch all reviews
+    // fetch all
     const reviews = await Review.find();
 
     // Respond with the fetched reviews
