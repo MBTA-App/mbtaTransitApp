@@ -21,4 +21,20 @@ router.get("/getFavorites/:userId", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+router.get("/getFavorites", async (req, res) => {
+  try {
+    const favorites = await Favorite.find();
+
+    if (favorites.length === 0) {
+      return res.status(404).json({ error: "No favorites found" });
+    }
+
+    res.status(200).json(favorites);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
