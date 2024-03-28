@@ -12,51 +12,51 @@ const EditUserPage = () => {
   const url = "http://localhost:8081/user/editUser";
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
-
-  // form validation checks
+  const [stations, setStations] = useState([]);
+  const [selectedStation, setSelectedStation] = useState("");
   const [errors, setErrors] = useState({});
-  const findFormErrors = () => {
-    const { username, email, password } = form;
-    const newErrors = {};
-    // username validation checks
-    if (!username || username === "") newErrors.name = "Input a valid username";
-    else if (username.length < 6)
-      newErrors.name = "Username must be at least 6 characters";
-    // email validation checks
-    if (!email || email === "") newErrors.email = "Input a valid email address";
-    if (!/\S+@\S+\.\S+/.test(email))
-      newErrors.email = "Input a valid email address";
-    // password validation checks
-    if (!password || password === "")
-      newErrors.password = "Input a valid password";
-    else if (password.length < 8)
-      newErrors.password = "Password must be at least 8 characters";
-    return newErrors;
-  };
-
-  // initialize form values and get userId on render
   const [form, setValues] = useState({
     userId: "",
     username: "",
     email: "",
     password: "",
   });
+
+  const favoriteUrl = "http://localhost:8081/userFav/userFavorite";
   useEffect(() => {
+    fetchStations();
     setValues({ userId: getUserInfo().id });
   }, []);
 
-  // handle form field changes
+  const fetchStations = async () => {
+    try {
+      const response = await fetch(
+        "https://api-v3.mbta.com/stops?filter[route_type]=1"
+      );
+      const data = await response.json();
+      setStations(
+        data.data.map((station) => ({
+          id: station.id,
+          name: station.attributes.name,
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching stations:", error);
+      // Handle error
+    }
+  };
+
   const handleChange = ({ currentTarget: input }) => {
     setValues({ ...form, [input.id]: input.value });
-    if (!!errors[input])
+    if (!!errors[input]) {
       setErrors({
         ...errors,
         [input]: null,
       });
+    }
   };
 
-  // handle form submission with submit button
-  const handleSubmit = async (event) => {
+  const handleUserSubmit = async (event) => {
     event.preventDefault();
     const newErrors = findFormErrors();
     if (Object.keys(newErrors).length > 0) {
@@ -65,11 +65,8 @@ const EditUserPage = () => {
       try {
         const { data: res } = await axios.post(url, form);
         const { accessToken } = res;
-        //store token in localStorage
         localStorage.setItem("accessToken", accessToken);
-        //Set success message
         setSuccessMessage("successful!");
-        //reset Errors after success
         setErrors({});
         navigate("/privateuserprofile");
       } catch (error) {
@@ -88,8 +85,41 @@ const EditUserPage = () => {
     }
   };
 
-  // handle cancel button
-  const handleCancel = (async) => {
+  const handleFavoriteSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(favoriteUrl, {
+        user: form.userId,
+        stationId: selectedStation,
+      });
+      setSuccessMessage("Favorite station updated successfully!");
+      // Clear errors after successful update
+      setErrors({});
+    } catch (error) {
+      console.error("Error updating favorite station:", error);
+      if (error.response && error.response.status === 409) {
+        setErrors({ station: "Station update failed, please try again" });
+      }
+    }
+  };
+
+  const findFormErrors = () => {
+    const { username, email, password } = form;
+    const newErrors = {};
+    if (!username || username === "") newErrors.name = "Input a valid username";
+    else if (username.length < 6)
+      newErrors.name = "Username must be at least 6 characters";
+    if (!email || email === "") newErrors.email = "Input a valid email address";
+    if (!/\S+@\S+\.\S+/.test(email))
+      newErrors.email = "Input a valid email address";
+    if (!password || password === "")
+      newErrors.password = "Input a valid password";
+    else if (password.length < 8)
+      newErrors.password = "Password must be at least 8 characters";
+    return newErrors;
+  };
+
+  const handleCancel = () => {
     navigate("/privateuserprofile");
   };
 
@@ -108,16 +138,8 @@ const EditUserPage = () => {
             <div className="alert alert-success">{successMessage}</div>
           )}
 
-          <Form>
+          <Form onSubmit={handleUserSubmit}>
             <Form.Group className="mb-3" controlId="formName">
-              {/* <input
-                type="text"
-                readonly
-                class="form-control-plaintext"
-                id="staticEmail"
-                value=
-              /> */}
-
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="text"
@@ -162,19 +184,36 @@ const EditUserPage = () => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Row>
-              <Col>
-                <Button variant="primary" type="submit" onClick={handleSubmit}>
-                  Submit
-                </Button>
-              </Col>
+            <Button variant="primary" type="submit">
+              Update User Info
+            </Button>
+          </Form>
 
-              <Col>
-                <Button variant="primary" type="cancel" onClick={handleCancel}>
-                  Cancel
-                </Button>
-              </Col>
-            </Row>
+          <hr />
+
+          <Form onSubmit={handleFavoriteSubmit}>
+            <Form.Group className="mb-3" controlId="formFavorite">
+              <Form.Label>Select a Favorite Station</Form.Label>
+              <Form.Select
+                value={selectedStation}
+                onChange={(e) => setSelectedStation(e.target.value)}
+                isInvalid={!!errors.station}
+              >
+                <option value="">Select a Favorite Station</option>
+                {stations.map((station) => (
+                  <option key={station.id} value={station.name}>
+                    {station.name}
+                  </option>
+                ))}
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errors.station}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Update Favorite Station
+            </Button>
           </Form>
         </Card.Body>
       </Card>

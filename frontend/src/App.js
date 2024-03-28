@@ -12,7 +12,6 @@ import PrivateUserProfile from "./components/pages/privateUserProfilePage";
 import { createContext, useState, useEffect } from "react";
 import getUserInfo from "./utilities/decodeJwt";
 import MbtaAlertPage from "./components/pages/mbtaAlert";
-import MbtaRoutesPage from "./components/pages/mbtaRoutes";
 import MbtaTrackerPage from "./components/pages/mbtaTracker";
 import MbtaStationPage from "./components/pages/mbtaStation";
 import StationDetailsPage from "./components/pages/stationDetails";
@@ -40,7 +39,6 @@ const App = () => {
           <Route exact path="/signup" element={<Signup />} />
           <Route path="/privateUserProfile" element={<PrivateUserProfile />} />
           <Route path="/mbtaAlert" element={<MbtaAlertPage />} />
-          <Route path="/mbtaRoutes" element={<MbtaRoutesPage />} />
           <Route path="/mbtaTracker" element={<MbtaTrackerPage />} />
           <Route path="/mbtaStation" element={<MbtaStationPage />} />
           <Route path="/stations/:stationId" element={<StationDetailsPage />} />

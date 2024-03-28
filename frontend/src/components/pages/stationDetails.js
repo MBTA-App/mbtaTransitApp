@@ -84,9 +84,13 @@ function StationDetails() {
 
   const handleVote = async (reviewId, voteType) => {
     try {
-      await axios.post(`http://localhost:8081/userReview/vote/${reviewId}`, {
-        voteType,
-      });
+      await axios.post(
+        `http://localhost:8081/reviewRating/rateReview/${reviewId}`,
+        {
+          voteType,
+          ...reviewData,
+        }
+      );
 
       // Optionally, you can update the UI to reflect the new vote counts
     } catch (error) {
@@ -125,25 +129,6 @@ function StationDetails() {
     fetchReviews();
     fetchStationDetails();
   }, [stationId]);
-
-  // const [basic] = useState([
-  //   {
-  //     tooltip: 'Very Bad',
-  //   },
-  //   {
-  //     tooltip: 'Poor',
-  //   },
-  //   {
-  //     tooltip: 'Ok',
-  //     choosed: true,
-  //   },
-  //   {
-  //     tooltip: 'Good',
-  //   },
-  //   {
-  //     tooltip: 'Excellent',
-  //   },
-  // ])
 
   if (!station) {
     return (
@@ -289,15 +274,11 @@ function StationDetails() {
 
                         <div className="mt-2" key={review._id}>
                           {" "}
-                          <button
-                            onClick={() => handleVote(review._id, "thumbsUp")}
-                          >
+                          <button onClick={() => handleVote(review._id, 1)}>
                             👍
                           </button>
                           <span>{review.thumbsUp}</span>
-                          <button
-                            onClick={() => handleVote(review._id, "thumbsDown")}
-                          >
+                          <button onClick={() => handleVote(review._id, 0)}>
                             👎
                           </button>
                           <span>{review.thumbsDown}</span>
