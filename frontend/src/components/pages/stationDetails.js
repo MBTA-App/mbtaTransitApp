@@ -13,9 +13,12 @@ import Col from "react-bootstrap/Col";
 import getUserInfo from "../../utilities/decodeJwt";
 
 function StationDetails() {
+  const [deleteStatuses, setDeleteStatuses] = useState({});
+
   const { stationId } = useParams(); // Extract stationId from URL params
   const [station, setStation] = useState(null);
   const [reviews, setReviews] = useState([]); // New state for reviews
+  const [reviewRatings, setReviewRatings] = useState([]); // New state for reviews
   const [submitStatus, setSubmitStatus] = useState(null); // New state for submit status
   const [userInfo, setUserInfo] = useState(null); // New state for user information
   const [deleteStatus, setDeleteStatus] = useState(null);
@@ -25,6 +28,12 @@ function StationDetails() {
     recommendation: "",
     description: "",
     user: "",
+    stationId: stationId,
+  });
+
+  const [ratingData, setRatingData] = useState({
+    //default values
+    username: "",
     stationId: stationId,
   });
 
@@ -39,6 +48,11 @@ function StationDetails() {
       ...prevData,
       user: currentUserInfo ? currentUserInfo.username : "",
     }));
+
+    setRatingData((prevData) => ({
+      ...prevData,
+      username: currentUserInfo ? currentUserInfo.username : "",
+    }));
   }, []);
 
   const handleReviewChange = (input) => {
@@ -49,9 +63,20 @@ function StationDetails() {
     e.preventDefault();
     try {
       // Assuming you have a reviews endpoint for submitting reviews
-      await axios.post(`http://localhost:8081/userReview/reviews`, {
-        stationId: stationId, // Add stationId to associate the review with the station
-        ...reviewData,
+      const response = await axios.post(
+        `http://localhost:8081/userReview/reviews`,
+        {
+          stationId: stationId, // Add stationId to associate the review with the station
+          ...reviewData,
+        }
+      );
+
+      setReviews([...reviews, response.data]);
+      setReviewData({
+        recommendation: "",
+        description: "",
+        user: userInfo ? userInfo.username : "",
+        stationId: stationId,
       });
 
       // Optionally, you can perform any additional actions after a successful submission
@@ -72,31 +97,79 @@ function StationDetails() {
         `http://localhost:8081/userReview/deleteReviews/${reviewId}`
       );
 
+      setReviews(reviews.filter((review) => review._id !== reviewId));
+
+      setDeleteStatuses({ ...deleteStatuses, [reviewId]: "Success" });
+
       // Optionally, you can perform any additional actions after a successful deletion
       // For example, updating the UI or reloading the reviews
       console.log("Review deleted successfully!");
-      setDeleteStatus("Success");
     } catch (error) {
       console.error("Error deleting review:", error);
-      setDeleteStatus("Error");
+      setDeleteStatuses({ ...deleteStatuses, [reviewId]: "Error" });
     }
   };
 
-  const handleVote = async (reviewId, voteType) => {
+  // Define the fetchReviewRatings function
+  const fetchReviewRatings = async (reviewId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/reviewRating/getRatings/${reviewId}`
+      );
+      const ratings = response.data;
+
+      let thumbsUpCount = 0;
+      let thumbsDownCount = 0;
+
+      ratings.forEach((rating) => {
+        if (rating.voteType === 1) {
+          thumbsUpCount++;
+        } else if (rating.voteType === 0) {
+          thumbsDownCount++;
+        }
+      });
+
+      return { thumbsUpCount, thumbsDownCount };
+    } catch (error) {
+      console.error("Error fetching review ratings:", error);
+      return { thumbsUpCount: 0, thumbsDownCount: 0 }; // Return default values on error
+    }
+  };
+
+  const handleVote = async (reviewId, voteType, stationId) => {
     try {
       await axios.post(
         `http://localhost:8081/reviewRating/rateReview/${reviewId}`,
-        {
-          voteType,
-          ...reviewData,
-        }
+        { voteType, stationId, ...ratingData }
       );
 
-      // Optionally, you can update the UI to reflect the new vote counts
+      // Fetch updated vote counts after voting
+      const { thumbsUpCount, thumbsDownCount } = await fetchReviewRatings(
+        reviewId
+      );
+
+      // Update the reviews array with the updated counts
+      const updatedReviews = reviews.map((review) => {
+        if (review._id === reviewId) {
+          return {
+            ...review,
+            thumbsUp: thumbsUpCount,
+            thumbsDown: thumbsDownCount,
+          };
+        }
+        return review;
+      });
+
+      // Set the state with the updated reviews
+      setReviews(updatedReviews);
     } catch (error) {
       console.error("Error recording vote:", error);
     }
   };
+  useEffect(() => {
+    // Fetch initial reviews data when component mounts
+    // Example: axios.get('http://localhost:8081/reviews').then(response => setReviews(response.data));
+  }, []); // Add any dependencies if needed
 
   let buttonStyling = {
     background: "#fffff",
@@ -116,18 +189,59 @@ function StationDetails() {
 
     async function fetchReviews() {
       try {
-        // Assuming you have an endpoint for fetching reviews
         const reviewsResult = await api.get(
           `/userReview/getReviews/${stationId}`
         );
-        setReviews(reviewsResult.data); // Assuming reviews data is an array
+        const fetchedReviews = reviewsResult.data;
+
+        // Fetch review ratings for each review
+        const updatedReviews = await Promise.all(
+          fetchedReviews.map(async (review) => {
+            try {
+              // Fetch review ratings for the current review
+              const response = await axios.get(
+                `http://localhost:8081/reviewRating/getRatings/${review._id}`
+              );
+              const ratings = response.data;
+
+              let thumbsUpCount = 0;
+              let thumbsDownCount = 0;
+
+              // Calculate thumbs up and thumbs down counts
+              ratings.forEach((rating) => {
+                if (rating.voteType === 1) {
+                  thumbsUpCount++;
+                } else if (rating.voteType === 0) {
+                  thumbsDownCount++;
+                }
+              });
+
+              // Update the review object with thumbs up and thumbs down counts
+              return {
+                ...review,
+                thumbsUp: thumbsUpCount,
+                thumbsDown: thumbsDownCount,
+              };
+            } catch (error) {
+              console.error("Error fetching review ratings:", error);
+              return review; // Return the original review if there's an error
+            }
+          })
+        );
+        setReviews(updatedReviews); // Update the state with reviews containing thumbs up and thumbs down counts
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }
     }
 
-    fetchReviews();
-    fetchStationDetails();
+    async function fetchData() {
+      // Fetch reviews and station details concurrently
+      await Promise.all([fetchReviews(), fetchStationDetails()]);
+      // Fetch review ratings after reviews and station details are fetched
+      // await fetchReviewRatingsOnLoad();
+    }
+
+    fetchData();
   }, [stationId]);
 
   if (!station) {
@@ -239,20 +353,24 @@ function StationDetails() {
                     .map((review) => (
                       <div className="mt-2" key={review._id}>
                         {/* Display each review here */}
-                        <p>By: {review.user}</p>
-                        <p>Recommendation: {review.recommendation}</p>
-                        <p>Description: {review.description}</p>
-                        <p>
-                          Posted On:{" "}
-                          {new Date(review.date).toLocaleString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "numeric",
-                            second: "numeric",
-                          })}
-                        </p>
+                        {review && review.user && (
+                          <>
+                            <p>By: {review.user}</p>
+                            <p>Recommendation: {review.recommendation}</p>
+                            <p>Description: {review.description}</p>
+                            <p>
+                              Posted On:{" "}
+                              {new Date(review.date).toLocaleString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric",
+                              })}
+                            </p>
+                          </>
+                        )}
                         {userInfo && userInfo.username === review.user && (
                           <Button
                             variant="danger"
@@ -261,12 +379,12 @@ function StationDetails() {
                             Delete
                           </Button>
                         )}
-                        {deleteStatus === "Success" && (
+                        {deleteStatuses[review._id] === "Success" && (
                           <div className="text-success">
                             Review deleted successfully!
                           </div>
                         )}
-                        {deleteStatus === "Error" && (
+                        {deleteStatuses[review._id] === "Error" && (
                           <div className="text-danger">
                             Error deleting review. Please try again.
                           </div>
@@ -275,13 +393,11 @@ function StationDetails() {
                         <div className="mt-2" key={review._id}>
                           {" "}
                           <button onClick={() => handleVote(review._id, 1)}>
-                            👍
+                            {review.thumbsUp}👍
                           </button>
-                          <span>{review.thumbsUp}</span>
                           <button onClick={() => handleVote(review._id, 0)}>
-                            👎
+                            👎{review.thumbsDown}
                           </button>
-                          <span>{review.thumbsDown}</span>
                         </div>
                         <hr />
                       </div>
