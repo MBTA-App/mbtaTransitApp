@@ -62,10 +62,7 @@ function Stations() {
                       ? station.attributes.description.split("-")[1]?.trim()
                       : "Not available"}
                   </Card.Text>
-                  <Card.Text>
-                    <strong>Location:</strong>{" "}
-                    {station.attributes.address || "Not available"}
-                  </Card.Text>
+
                   <Card.Text>
                     <strong>Municipality:</strong>{" "}
                     {station.attributes.municipality}

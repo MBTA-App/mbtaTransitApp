@@ -1,0 +1,23 @@
+@import "~bootstrap-icons/font/bootstrap-icons";
+
+.thumb-icon:hover .icon {
+    color: red; /* Change to the desired hover color */
+  }
+
+  
+.background-hover:hover {
+    background-color: lightgreen !important; /* Change to the desired hover color */
+  }
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+  
+  .shake:hover {
+    animation: shake 0.5s ease-in-out; /* Adjust duration and timing function as needed */
+  }
+  

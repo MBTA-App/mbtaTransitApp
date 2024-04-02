@@ -1,4 +1,5 @@
 // StationDetails.js
+import "../../styles.css";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -359,7 +360,7 @@ function StationDetails() {
                             <p>Recommendation: {review.recommendation}</p>
                             <p>Description: {review.description}</p>
                             <p>
-                              Posted On:{" "}
+                              {/* Posted On:{" "} */}
                               {new Date(review.date).toLocaleString("en-US", {
                                 year: "numeric",
                                 month: "long",
@@ -392,13 +393,26 @@ function StationDetails() {
 
                         <div className="mt-2" key={review._id}>
                           {" "}
-                          <button onClick={() => handleVote(review._id, 1)}>
-                            {review.thumbsUp}👍
+                          <button
+                            className="border-0 bg-white background-hover shake"
+                            onClick={() => handleVote(review._id, 1)}
+                          >
+                            {review.thumbsUp}{" "}
+                            <span role="img" aria-label="thumbs up">
+                              👍
+                            </span>
                           </button>
-                          <button onClick={() => handleVote(review._id, 0)}>
-                            👎{review.thumbsDown}
+                          <button
+                            className="border-0 bg-white background-hover shake"
+                            onClick={() => handleVote(review._id, 0)}
+                          >
+                            👎{" "}
+                            <span role="img" aria-label="thumbs down">
+                              {review.thumbsDown}
+                            </span>
                           </button>
                         </div>
+
                         <hr />
                       </div>
                     ))}
