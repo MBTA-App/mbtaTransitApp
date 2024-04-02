@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 // User schema/model
 
@@ -8,16 +8,18 @@ const thumbsSchema = new mongoose.Schema(
       type: String,
       label: 'reviewid',
     },
-    thumbsUp: {
-      type: Number,
-      default: 0,
+    username: {
+      type: String,
+      ref: 'User', // Reference to the User model
+      label: 'username',
+      required: true,
     },
-    thumbsDown: {
+    voteType: {
       type: Number,
       default: 0,
     },
   },
-  { collection: "reviewRating" }
-);
+  { collection: 'reviewRating' }
+)
 
-module.exports = mongoose.model("ReviewRating", thumbsSchema);
+module.exports = mongoose.model('ReviewRating', thumbsSchema)
