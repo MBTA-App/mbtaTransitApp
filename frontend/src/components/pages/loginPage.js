@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import getUserInfo from '../../utilities/decodeJwt'
 
-const PRIMARY_COLOR = '#cc5c99'
+const PRIMARY_COLOR = 'red'
 const SECONDARY_COLOR = '#0c0c1f'
 const url = 'http://localhost:8081/user/login'
 
@@ -13,17 +13,22 @@ const Login = () => {
   const [user, setUser] = useState(null)
   const [data, setData] = useState({ username: '', password: '' })
   const [error, setError] = useState('')
-  const [light, setLight] = useState(false)
   const [bgColor, setBgColor] = useState(SECONDARY_COLOR)
-  const [bgText, setBgText] = useState('Light Mode')
   const navigate = useNavigate()
 
   let labelStyling = {
     color: PRIMARY_COLOR,
     fontWeight: 'bold',
     textDecoration: 'none',
+    textShadow: '2px 2px 4px #000000'
   }
-  let backgroundStyling = { background: bgColor }
+  let backgroundStyling = { 
+    background: bgColor,
+    backgroundImage: 'url(https://bdc2020.o0bc.com/wp-content/uploads/2019/09/orangelinecar-768x432.jpeg?width=800)', 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+  }
+
   let buttonStyling = {
     background: PRIMARY_COLOR,
     borderStyle: 'none',
@@ -38,21 +43,16 @@ const Login = () => {
     const obj = getUserInfo(user)
     setUser(obj)
 
-    if (light) {
-      setBgColor('white')
-      setBgText('Dark mode')
-    } else {
-      setBgColor(SECONDARY_COLOR)
-      setBgText('Light mode')
-    }
     if (user) {
       navigate('/home')
     }
-  }, [light, user, navigate])
+  }, [user, navigate])
 
   const handleSubmit = async e => {
     e.preventDefault()
     try {
+      let audio = new Audio('mixkit-train-door-close-1638.wav'); 
+      audio.play()
       const { data: res } = await axios.post(url, data)
       const { accessToken } = res
       //store token in localStorage
@@ -97,19 +97,6 @@ const Login = () => {
                     </span>
                   </Form.Text>
                 </Form.Group>
-                <div class='form-check form-switch'>
-                  <input
-                    class='form-check-input'
-                    type='checkbox'
-                    id='flexSwitchCheckDefault'
-                    onChange={() => {
-                      setLight(!light)
-                    }}
-                  />
-                  <label class='form-check-label' for='flexSwitchCheckDefault' className='text-muted'>
-                    {bgText}
-                  </label>
-                </div>
                 {error && (
                   <div style={labelStyling} className='pt-3'>
                     {error}
