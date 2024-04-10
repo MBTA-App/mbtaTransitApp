@@ -13,7 +13,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import getUserInfo from "../../utilities/decodeJwt";
 
-function StationDetails() {
+function StationDetails({ recommendCount, notRecommendedCount }) {
   const [deleteStatuses, setDeleteStatuses] = useState({});
 
   const { stationId } = useParams(); // Extract stationId from URL params
@@ -23,6 +23,9 @@ function StationDetails() {
   const [submitStatus, setSubmitStatus] = useState(null); // New state for submit status
   const [userInfo, setUserInfo] = useState(null); // New state for user information
   const [deleteStatus, setDeleteStatus] = useState(null);
+
+  const [recommendationCount, setRecommendationCount] = useState(0);
+  const [notRecommendationCount, setNotRecommendationCount] = useState(0);
 
   const [reviewData, setReviewData] = useState({
     //default values
@@ -195,6 +198,23 @@ function StationDetails() {
         );
         const fetchedReviews = reviewsResult.data;
 
+        let recommendCount = 0;
+        let notRecommendedCount = 0;
+
+        fetchedReviews.forEach((review) => {
+          if (review.recommendation === "Recommended") {
+            recommendCount++;
+          } else if (review.recommendation === "Not Recommended") {
+            notRecommendedCount++;
+          }
+        });
+
+        setRecommendationCount(recommendCount);
+        setNotRecommendationCount(notRecommendedCount);
+
+        console.log(recommendCount);
+        console.log(notRecommendedCount);
+
         // Fetch review ratings for each review
         const updatedReviews = await Promise.all(
           fetchedReviews.map(async (review) => {
@@ -270,6 +290,29 @@ function StationDetails() {
               stationName={station.attributes.platform_name}
             />
           </Card>
+          <div>
+            <h2
+              className="text-center mt-2"
+              style={{
+                fontSize: "16px",
+                color:
+                  recommendationCount === 0 && notRecommendationCount === 0
+                    ? "orange"
+                    : recommendationCount > notRecommendationCount
+                    ? "green"
+                    : "red",
+              }}
+            >
+              {recommendationCount === 0 && notRecommendationCount === 0
+                ? "Users have not reviewed this station yet."
+                : `Based on reviews, most users ${
+                    recommendationCount > notRecommendationCount
+                      ? "recommend this station!"
+                      : "do not recommend this station!"
+                  }`}
+            </h2>
+          </div>
+
           <Container className="justify-content-center align-content-center d-flex">
             <div
               style={{ width: "100%" }}
@@ -391,10 +434,10 @@ function StationDetails() {
                           </div>
                         )}
 
-                        <div className="mt-2" key={review._id}>
+                        <div className="mt-2 " key={review._id}>
                           {" "}
                           <button
-                            className="border-0 bg-white background-hover shake"
+                            className="border-0 bg-gray  shake"
                             onClick={() => handleVote(review._id, 1)}
                           >
                             {review.thumbsUp}{" "}
@@ -403,7 +446,7 @@ function StationDetails() {
                             </span>
                           </button>
                           <button
-                            className="border-0 bg-white background-hover shake"
+                            className="border-0 bg-gray  shake"
                             onClick={() => handleVote(review._id, 0)}
                           >
                             👎{" "}
