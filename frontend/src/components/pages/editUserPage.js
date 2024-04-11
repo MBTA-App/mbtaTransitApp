@@ -49,28 +49,23 @@ const EditUserPage = () => {
     }
   };
 
-  //module used to fetch the user favorite station data to the frontend
+  //module used to fetch the user favorite station data to the frontend 
   const fetchUserFavorites = async () => {
     try {
       const response = await axios.get(getFavoritesUrl + userId);
       console.log("User favorites response:", response.data); // Log the server response
       const userFavoritesData = response.data;
-
+  
       if (!Array.isArray(userFavoritesData)) {
-        console.error(
-          "User favorites data is not an array:",
-          userFavoritesData
-        );
+        console.error("User favorites data is not an array:", userFavoritesData);
         return;
       }
-
+  
       console.log("Stations:", stations); // Log the stations data
-
+  
       // Filter out duplicate station IDs
-      const uniqueStationIds = [
-        ...new Set(userFavoritesData.map((favorite) => favorite.stationId)),
-      ];
-
+      const uniqueStationIds = [...new Set(userFavoritesData.map(favorite => favorite.stationId))];
+  
       const favoritesWithData = uniqueStationIds.map((stationId) => {
         const station = stations.find((station) => station.id === stationId);
         if (!station) {
@@ -85,7 +80,7 @@ const EditUserPage = () => {
           name: station.name,
         };
       });
-
+  
       setUserFavorites(favoritesWithData);
     } catch (error) {
       console.error("Error fetching user favorites:", error);
@@ -278,17 +273,15 @@ const EditUserPage = () => {
             <Button variant="primary" type="submit">
               Update Favorite Station
             </Button>
-            <p></p>
-            {
-              <div>
-                <h4>My Favorite Stations:</h4>
-                <ul>
-                  {userFavorites.map((favorite) => (
-                    <li key={favorite.id}>{favorite.name}</li>
-                  ))}
-                </ul>
-              </div>
-            }
+<p></p>
+            {<div>
+              <h4>My Favorite Stations:</h4>
+              <ul>
+                {userFavorites.map((favorite) => (
+                  <li key={favorite.id}>{favorite.name}</li>
+                ))}
+              </ul>
+            </div> }  
           </Form>
         </Card.Body>
       </Card>

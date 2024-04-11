@@ -14,27 +14,31 @@ export default function Navbar() {
   }, []);
 
   return (
-    <ReactNavbar bg="dark" variant="dark">
+    <ReactNavbar
+      bg="dark"
+      variant="dark"
+      style={{ 
+        position: "fixed",
+        top: "0%",
+        left: 0,
+        height: "100vh",
+        width: "180px", // Adjust the width as needed
+        zIndex: "100%", // Ensure it's above other content
+      }}
+    >
       <Container>
-        <Nav className="mx-auto">
-          <Nav.Link href="/home">Home</Nav.Link>
-          <Nav.Link href="/mbtaTracker">MBTA Tracker</Nav.Link>
-          <Nav.Link href="/mbtaAlert">MBTA Alerts</Nav.Link>
-          <Nav.Link href="/mbtaStation">MBTA Stations</Nav.Link>
-        </Nav>
-        <Nav>
+        <Nav className="flex-column" style={{ marginBottom: "175%"}}>
+          <Nav.Link href="/home" style={{ marginBottom: "70%",marginTop:"300%",fontFamily: "Arial, sans-serif", fontWeight: "bold", fontSize: "20px",marginLeft:"23%" }}><i>Home</i></Nav.Link>
+          <Nav.Link href="/mbtaTracker" style={{ marginBottom: "70%", marginTop:"40%",fontFamily: "Arial, sans-serif", fontWeight: "bold", fontSize: "20px"  }}><i>MBTA Tracker</i></Nav.Link>
+          <Nav.Link href="/mbtaAlert" style={{ marginBottom: "70%",marginTop: "40%",fontFamily: "Arial, sans-serif", fontWeight: "bold", fontSize: "20px",marginLeft:"5%" }}><i>MBTA Alerts</i></Nav.Link>
+          <Nav.Link href="/mbtaStation" style={{ marginBottom: "70%",marginTop:"40%",fontFamily: "Arial, sans-serif", fontWeight: "bold", fontSize: "20px"  }}><i>MBTA Stations</i></Nav.Link>
           <NavDropdown
-            title={
-              <span>
-                <BsPerson size="25" />
-              </span>
-            }
+            title={<BsPerson size="40" />}
             id="basic-nav-dropdown"
+            style={{ position: "absolute", top: "20px", left: 0 }}
           >
             <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-            <NavDropdown.Item href="/privateUserProfile">
-              Settings
-            </NavDropdown.Item>
+            <NavDropdown.Item href="/privateUserProfile"><Nav.Link href="/home" style={{ marginTop: "-25%" }}>Home</Nav.Link>Settings</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Container>

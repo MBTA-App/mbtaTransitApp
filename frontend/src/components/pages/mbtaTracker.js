@@ -31,19 +31,12 @@ const Trackerpage = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <Card
-        style={{ width: "90%", height: "90%" }}
+        style={{ width: "80%", height: "90%",marginLeft:"10%" }}
         className="text-center bg-white shadow-xl rounded border-0"
       >
         <Card.Body className="d-flex flex-column align-items-center justify-content-center text-light">
           <Card.Title className="display-4 text-black">Live Tracker</Card.Title>
           <div className="mt-4 mb-4">
-            <button
-              style={routeTypeFilter === null ? activeButtonStyle : buttonStyle}
-              //set to null to show all route types
-              onClick={() => handleFilterClick(null)}
-            >
-              All
-            </button>
             <button
               style={routeTypeFilter === 0 ? activeButtonStyle : buttonStyle}
               onClick={() => handleFilterClick(0)}
