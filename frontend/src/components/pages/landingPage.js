@@ -25,14 +25,14 @@ const Landingpage = () => {
 
   if (user) {
     return (
-      <div>
+      <div style={{ padding: "4px", marginLeft: "13%" }}>
         <div>
           <div>
             <h1 className="align-content-center justify-content-center d-flex mt-4">
               MBTAXpress
             </h1>
           </div>
-          {/* Welcome Card */}={" "}
+          {/* Welcome Card */}{" "}
           <Container
             style={{ marginTop: "0rem" }}
             className="d-flex justify-content-centerrow text-center text-md-center"
@@ -107,7 +107,7 @@ const Landingpage = () => {
   }
   if (!user) {
     return (
-      <div>
+      <div style={{ padding: "4px", marginLeft: "13%" }}>
         <div>
           <h1 className="justify-content-center d-flex mt-4 ml-4 display-1 fw-bolder">
             MBTAXpress
@@ -116,8 +116,8 @@ const Landingpage = () => {
         <Container className="d-flex flex-column align-items-center justify-content-center vh-100">
           {/* Welcome Card */}
           <div
-            style={{ width: "50%", height: "20%" }}
-            className="text-center shadow-xl rounded border bg-dark"
+            style={{ width: "50%", height: "30%" }}
+            className="text-center shadow-xl rounded-pill border bg-dark"
           >
             <div className="text-center d-flex flex-column align-items-center justify-content-center">
               <Card.Subtitle className="mb-2 mt-4 text-white display-5 ">
@@ -152,17 +152,18 @@ const Landingpage = () => {
               </Button> */}
             </div>
           </div>
-          <Container className="py-md-6 py-4">
-            <Card className="border-0">
+          <Container style={{ marginTop: "5%" }}>
+            {" "}
+            <Card className="border-0 bg-dark rounded-lg">
               {/* Lorem Ipsum Content */}
               <div className="mb-2 mt-4">
                 <Card.Body>
-                  <Card.Title className="text-center display-6 rfs-20 fw-semibold">
+                  <Card.Title className="text-center text-white display-6 rfs-20 fw-semibold">
                     Join MBTAXpress Today{" "}
                   </Card.Title>
                 </Card.Body>
               </div>
-              <Container className="row text-center text-md-center">
+              <Container className="row text-center text-md-center text-white">
                 <div className="col-md-6 mb-4">
                   <Card.Body>
                     <Card.Text className="lead display-4">
