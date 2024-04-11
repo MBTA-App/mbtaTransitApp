@@ -93,8 +93,11 @@ const Login = () => {
                     onChange={handleChange}
                     placeholder="Enter username"
                   />
-                  <Form.Text className="text-muted">
-                    We just might sell your data
+                  <Form.Text
+                    className="text-mute font-weight-bold"
+                    style={{ color: "white" }}
+                  >
+                    <b>We just might sell your data</b>
                   </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -107,12 +110,15 @@ const Login = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                  <Form.Text className="text-muted pt-1">
-                    Dont have an account?
+                  <Form.Text
+                    className="text-mute pt-1"
+                    style={{ color: "white" }}
+                  >
+                    <b>Dont have an account?</b>
                     <span>
-                      <Link to="/signup" style={labelStyling}>
+                      <Link to="/signup" style={{ color: "yellow" }}>
                         {" "}
-                        Sign up
+                        <b>Sign up</b>
                       </Link>
                     </span>
                   </Form.Text>
