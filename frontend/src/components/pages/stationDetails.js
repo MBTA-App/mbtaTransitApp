@@ -274,7 +274,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
   }
 
   return (
-    <Container>
+    <Container style={{ padding: "4px", marginLeft: "11%" }}>
       <div>
         <div>
           <h1 className="d-flex justify-content-center align-content-center">

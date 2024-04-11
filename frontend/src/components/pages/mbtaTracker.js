@@ -31,7 +31,7 @@ const Trackerpage = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <Card
-        style={{ width: "80%", height: "90%",marginLeft:"10%" }}
+        style={{ width: "80%", height: "90%", marginLeft: "12%" }}
         className="text-center bg-white shadow-xl rounded border-0"
       >
         <Card.Body className="d-flex flex-column align-items-center justify-content-center text-light">
