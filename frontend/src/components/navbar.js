@@ -35,8 +35,8 @@ export default function Navbar() {
               marginTop: "300%",
               fontFamily: "Arial, sans-serif",
               fontWeight: "bold",
-              fontSize: "20px",
-              marginLeft: "23%",
+              fontSize: "120%",
+              marginLeft: "2%",
             }}
           >
             <i>Home</i>
@@ -48,7 +48,8 @@ export default function Navbar() {
               marginTop: "40%",
               fontFamily: "Arial, sans-serif",
               fontWeight: "bold",
-              fontSize: "20px",
+              fontSize: "120%",
+              marginLeft: "-2%"
             }}
           >
             <i>MBTA Tracker</i>
@@ -60,8 +61,8 @@ export default function Navbar() {
               marginTop: "40%",
               fontFamily: "Arial, sans-serif",
               fontWeight: "bold",
-              fontSize: "20px",
-              marginLeft: "5%",
+              fontSize: "120%",
+              marginLeft: "-2%",
             }}
           >
             <i>MBTA Alerts</i>
@@ -73,7 +74,8 @@ export default function Navbar() {
               marginTop: "40%",
               fontFamily: "Arial, sans-serif",
               fontWeight: "bold",
-              fontSize: "20px",
+              fontSize: "115%",
+              marginLeft: "-2%"
             }}
           >
             <i>MBTA Stations</i>
@@ -81,7 +83,7 @@ export default function Navbar() {
           <NavDropdown
             title={<BsPerson size="40" />}
             id="basic-nav-dropdown"
-            style={{ position: "absolute", top: "20px", left: 0 }}
+            style={{ position: "absolute", top: "1%", left: 0 }}
           >
             <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
             <NavDropdown.Item href="/privateUserProfile">
