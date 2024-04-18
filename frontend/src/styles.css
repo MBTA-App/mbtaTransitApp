@@ -1,23 +1,86 @@
 @import "~bootstrap-icons/font/bootstrap-icons";
 
 .thumb-icon:hover .icon {
-    color: red; /* Change to the desired hover color */
-  }
+  color: red; /* Change to the desired hover color */
+}
 
-  
 .background-hover:hover {
-    background-color: lightgreen !important; /* Change to the desired hover color */
-  }
+  background-color: lightgreen !important; /* Change to the desired hover color */
+}
 
 @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
   }
-  
-  .shake:hover {
-    animation: shake 0.5s ease-in-out; /* Adjust duration and timing function as needed */
+  25% {
+    transform: translateX(-5px);
   }
-  
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake:hover {
+  animation: shake 0.5s ease-in-out; /* Adjust duration and timing function as needed */
+}
+
+/* Green Card */
+.green-card {
+  background-color: #28a745 !important; /* Matches Bootstrap's success button color */
+}
+
+/* Red Card */
+.red-card {
+  background-color: #dc3545 !important; /* Matches Bootstrap's danger button color */
+}
+
+/* Blue Card */
+.blue-card {
+  background-color: #007bff !important; /* Matches Bootstrap's primary button color */
+}
+
+/* Orange Card */
+.orange-card {
+  background-color: #ffc107 !important; /* Matches Bootstrap's warning button color */
+}
+
+/* Filtered Card */
+.filtered-card {
+  background-color: #ffc107 !important; /* Matches Bootstrap's warning button color */
+}
+/* Default Card */
+.default-card {
+  background-color: #ffffff !important; /* White color for default card */
+  color: #212529 !important; /* Text color for default card */
+}
+
+/* Hover effect for default card */
+.default-card:hover {
+  background-color: #f8f9fa !important; /* Light gray background on hover */
+}
+
+/* Hover effect for green cards */
+.green-card:hover {
+  background-color: #218838 !important; /* Darker shade of green */
+}
+
+/* Hover effect for red cards */
+.red-card:hover {
+  background-color: #c82333 !important; /* Darker shade of red */
+}
+
+/* Hover effect for blue cards */
+.blue-card:hover {
+  background-color: #0056b3 !important; /* Darker shade of blue */
+}
+
+/* Hover effect for orange cards */
+.orange-card:hover {
+  background-color: #e0a800 !important; /* Darker shade of orange */
+}

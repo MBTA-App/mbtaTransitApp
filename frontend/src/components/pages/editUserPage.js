@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import getUserInfo from "../../utilities/decodeJwt";
 
 const EditUserPage = () => {
-const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
+  const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
   const favoriteUrl = "http://localhost:8081/userFav/userFavorite";
   const getFavoritesUrl = "http://localhost:8081/userFav/getFavorites/";
   const navigate = useNavigate();
@@ -18,6 +18,8 @@ const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
   const userId = getUserInfo()?.id;
   const [userFavorites, setUserFavorites] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [deleteMessage, setDeleteMessage] = useState("");
+
   const [stations, setStations] = useState([]);
   const [selectedStation, setSelectedStation] = useState("");
   const [errors, setErrors] = useState({});
@@ -49,23 +51,28 @@ const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
     }
   };
 
-  //module used to fetch the user favorite station data to the frontend 
+  //module used to fetch the user favorite station data to the frontend
   const fetchUserFavorites = async () => {
     try {
       const response = await axios.get(getFavoritesUrl + userId);
       console.log("User favorites response:", response.data); // Log the server response
       const userFavoritesData = response.data;
-  
+
       if (!Array.isArray(userFavoritesData)) {
-        console.error("User favorites data is not an array:", userFavoritesData);
+        console.error(
+          "User favorites data is not an array:",
+          userFavoritesData
+        );
         return;
       }
-  
+
       console.log("Stations:", stations); // Log the stations data
-  
+
       // Filter out duplicate station IDs
-      const uniqueStationIds = [...new Set(userFavoritesData.map(favorite => favorite.stationId))];
-  
+      const uniqueStationIds = [
+        ...new Set(userFavoritesData.map((favorite) => favorite.stationId)),
+      ];
+
       const favoritesWithData = uniqueStationIds.map((stationId) => {
         const station = stations.find((station) => station.id === stationId);
         if (!station) {
@@ -80,7 +87,7 @@ const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
           name: station.name,
         };
       });
-  
+
       setUserFavorites(favoritesWithData);
     } catch (error) {
       console.error("Error fetching user favorites:", error);
@@ -94,6 +101,23 @@ const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
         ...errors,
         [input]: null,
       });
+    }
+  };
+
+  const handleDelete = async (favoriteId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8081/userFav/deleteFavorites/${userId}/${favoriteId}`
+      );
+      setUserFavorites(
+        userFavorites.filter((favorite) => favorite.id !== favoriteId)
+      );
+
+      setDeleteMessage("Favorite station deleted successfully!");
+      setErrors("");
+    } catch (error) {
+      console.error("Error deleting favorite station:", error);
+      setErrors({ delete: "Failed to delete favorite station" });
     }
   };
 
@@ -137,7 +161,7 @@ const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
     );
 
     // Check if a station is selected
-    if (!selectedStationObject) {
+    if (!selectedStation) {
       setErrors({ station: "Please select a favorite station" });
       return;
     }
@@ -151,6 +175,26 @@ const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
         user: userId,
         stationId: stationId,
       });
+
+      console.log(response);
+
+      // Extract the ID of the newly added favorite station from the response
+      const newFavoriteId = response.data.stationId;
+
+      console.log(newFavoriteId);
+
+      // Construct the new favorite object
+      const newFavorite = {
+        id: newFavoriteId,
+        // Other properties of the favorite station if available
+      };
+
+      // Update the userFavorites state by appending the new favorite
+      console.log("New Favorite:", newFavorite);
+      console.log("New Favorite:", newFavoriteId);
+
+      setUserFavorites([...userFavorites, newFavorite]);
+
       setSuccessMessage("Favorite station updated successfully!");
       // Clear errors after successful update
       setErrors({});
@@ -273,15 +317,25 @@ const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`;
             <Button variant="primary" type="submit">
               Update Favorite Station
             </Button>
-<p></p>
-            {<div>
-              <h4>My Favorite Stations:</h4>
-              <ul>
-                {userFavorites.map((favorite) => (
-                  <li key={favorite.id}>{favorite.name}</li>
-                ))}
-              </ul>
-            </div> }  
+            <p></p>
+            {
+              <div>
+                {deleteMessage && (
+                  <div className="alert alert-danger">{deleteMessage}</div>
+                )}
+                <h4>My Favorite Stations:</h4>
+                <ul>
+                  {userFavorites.map((favorite) => (
+                    <li key={favorite.id}>
+                      {favorite.name}
+                      <button onClick={() => handleDelete(favorite.id)}>
+                        Delete
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            }
           </Form>
         </Card.Body>
       </Card>
