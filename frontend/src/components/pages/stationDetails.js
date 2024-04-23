@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import { FaAngleDown } from "react-icons/fa";
 
 import { api } from "../../utilities/api";
 import Map from "../trainMap";
@@ -379,9 +380,8 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
               className="mx-auto d-block bg-success"
               onClick={handleToggleReviewForm}
             >
-              {showReviewForm
-                ? "Make a review of your own"
-                : "Make a review of your own"}
+              {showReviewForm ? "Create a review " : "Create a review"}
+              <FaAngleDown style={{ marginLeft: "5px" }} />
             </Button>
             {showReviewForm && (
               <Card className="border-0">

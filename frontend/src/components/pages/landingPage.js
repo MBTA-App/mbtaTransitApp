@@ -25,9 +25,7 @@ const Landingpage = () => {
 
   if (user) {
     return (
-      <div
-        style={{ backgroundColor: "red", padding: "4px", marginLeft: "13%" }}
-      >
+      <div style={{ padding: "4px", marginLeft: "13%" }}>
         <div>
           <div>
             <h1 className="align-content-center justify-content-center d-flex mt-4">
