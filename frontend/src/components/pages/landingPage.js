@@ -25,7 +25,9 @@ const Landingpage = () => {
 
   if (user) {
     return (
-      <div style={{ padding: "4px", marginLeft: "13%" }}>
+      <div
+        style={{ backgroundColor: "red", padding: "4px", marginLeft: "13%" }}
+      >
         <div>
           <div>
             <h1 className="align-content-center justify-content-center d-flex mt-4">
@@ -83,8 +85,7 @@ const Landingpage = () => {
                 </div>
               </div>
             </div>
-          </Container>
-          ={" "}
+          </Container>{" "}
           <Container className="d-flex mt-2 justify-content-center">
             <div className="mb-5">
               <Card.Body>

@@ -12,6 +12,8 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import getUserInfo from "../../utilities/decodeJwt";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { satisfies } from "semver";
 
 function StationDetails({ recommendCount, notRecommendedCount }) {
   const [deleteStatuses, setDeleteStatuses] = useState({});
@@ -26,6 +28,8 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
 
   const [recommendationCount, setRecommendationCount] = useState(0);
   const [notRecommendationCount, setNotRecommendationCount] = useState(0);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [address, setAddress] = useState("");
 
   const [reviewData, setReviewData] = useState({
     //default values
@@ -61,6 +65,24 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
 
   const handleReviewChange = (input) => {
     setReviewData({ ...reviewData, [input.name]: input.value });
+  };
+
+  const apiKey = "AIzaSyCvBDAvo5zxxkI5AHcZM091KvLoZf5Oi2c";
+
+  const getReverseGeocode = async (latitude, longitude) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
+      );
+      if (response.data.results && response.data.results.length > 0) {
+        return response.data.results[0].formatted_address;
+      } else {
+        return "Address not found";
+      }
+    } catch (error) {
+      console.error("Error fetching reverse geocode:", error);
+      return "Error fetching address";
+    }
   };
 
   const submitReview = async (e) => {
@@ -138,6 +160,10 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
       console.error("Error fetching review ratings:", error);
       return { thumbsUpCount: 0, thumbsDownCount: 0 }; // Return default values on error
     }
+  };
+
+  const handleToggleReviewForm = () => {
+    setShowReviewForm(!showReviewForm); // Toggle the state
   };
 
   const handleVote = async (reviewId, voteType, stationId) => {
@@ -263,7 +289,25 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
     }
 
     fetchData();
-  }, [stationId]);
+  }, [stationId, address]);
+
+  useEffect(() => {
+    if (station) {
+      // Extract latitude and longitude from station data
+      const latitude = station.attributes.latitude;
+      const longitude = station.attributes.longitude;
+      console.log(latitude, longitude);
+
+      // Call reverse geocode function to get address
+      async function getAddress() {
+        const address = await getReverseGeocode(latitude, longitude);
+        console.log(address);
+        setAddress(address);
+      }
+
+      getAddress();
+    }
+  }, [station]); // Make sure to include station as a dependency
 
   if (!station) {
     return (
@@ -285,8 +329,8 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
           </h1>
           <Card>
             <Map
-              latitude={station.attributes.latitude}
               longitude={station.attributes.longitude}
+              latitude={station.attributes.latitude}
               stationName={station.attributes.platform_name}
             />
           </Card>
@@ -321,12 +365,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
               <div className="row justify-content-center align-content-center">
                 <div className="col-sm-2">
                   <p>
-                    <strong>Latitude:</strong> {station.attributes.latitude}
-                  </p>
-                </div>
-                <div className="col-sm-2">
-                  <p>
-                    <strong>Longitude:</strong> {station.attributes.longitude}
+                    <strong>{address}</strong>
                   </p>
                 </div>
               </div>
@@ -335,63 +374,77 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
         </div>
 
         <Container>
-          <Card className="border-0">
-            <div className="text-center">
-              <div>
-                <h1>Want to review this station?</h1>
-              </div>
+          <div>
+            <Button
+              className="mx-auto d-block bg-success"
+              onClick={handleToggleReviewForm}
+            >
+              {showReviewForm
+                ? "Make a review of your own"
+                : "Make a review of your own"}
+            </Button>
+            {showReviewForm && (
               <Card className="border-0">
-                <div class="form-group d-flex flex-column align-items-center mb-4 ">
-                  <select
-                    class="form-control mb-3 w-75"
-                    name="recommendation" // Add the name attribute
-                    onChange={(e) => handleReviewChange(e.target)}
-                  >
-                    <option>Select one</option>
-                    <option>Recommended</option>
-                    <option>Not Recommended</option>
-                  </select>
-                  <label for="exampleFormControlInput1" class="col-form-label">
-                    Give a brief description of why:
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control w-75 py-5 align-top"
-                    id="review"
-                    name="description" // Add the name attribute
-                    value={reviewData.description}
-                    onChange={(e) => handleReviewChange(e.target)}
-                    placeholder=""
-                  />
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    onClick={submitReview}
-                    style={{ buttonStyling }}
-                    className="mt-2 col-sm-3 col-lg-2 col-md-2"
-                  >
-                    Submit
-                  </Button>
+                <div className="text-center">
+                  <div>
+                    <h1>Want to review this station?</h1>
+                  </div>
+                  <Card className="border-0">
+                    <div className="form-group d-flex flex-column align-items-center mb-4">
+                      <select
+                        className="form-control mb-3 w-75"
+                        name="recommendation" // Add the name attribute
+                        onChange={(e) => handleReviewChange(e.target)}
+                      >
+                        <option>Select one</option>
+                        <option>Recommended</option>
+                        <option>Not Recommended</option>
+                      </select>
+                      <label
+                        htmlFor="exampleFormControlInput1"
+                        className="col-form-label"
+                      >
+                        Give a brief description of why:
+                      </label>
+                      <textarea
+                        type="text"
+                        className="form-control w-75 py-5 align-top text-center"
+                        id="review"
+                        name="description" // Add the name attribute
+                        value={reviewData.description}
+                        onChange={(e) => handleReviewChange(e.target)}
+                        placeholder=""
+                      />
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={submitReview}
+                        style={buttonStyling}
+                        className="mt-2 col-sm-3 col-lg-2 col-md-2"
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </Card>
+                  {submitStatus === "Success" && (
+                    <div className="text-success">
+                      Review submitted successfully!
+                    </div>
+                  )}
+                  {submitStatus === "Error" && (
+                    <div className="text-danger">
+                      Error submitting review. Please try again.
+                    </div>
+                  )}
                 </div>
               </Card>
-              {submitStatus === "Success" && (
-                <div className="text-success">
-                  Review submitted successfully!
-                </div>
-              )}
-              {submitStatus === "Error" && (
-                <div className="text-danger">
-                  Error submitting review. Please try again.
-                </div>
-              )}
-            </div>
-          </Card>
-
-          <Card className="mt-4 border-0">
-            <div className="text-center">
+            )}
+          </div>
+          <Container className="mt-4 border-0">
+            <div className="d-flex justify-content-center p-4">
               <div>
-                <h1>View Reviews</h1>
-                <Card className="border">
+                <h1 className="text-center">Recent Reviews</h1>
+                <Card className="border-0 ">
                   {reviews
                     .sort((a, b) => new Date(b.date) - new Date(a.date)) // sort by date in descending order
                     .map((review) => (
@@ -399,26 +452,47 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
                         {/* Display each review here */}
                         {review && review.user && (
                           <>
-                            <p>By: {review.user}</p>
-                            <p>Recommendation: {review.recommendation}</p>
-                            <p>Description: {review.description}</p>
-                            <p>
-                              {/* Posted On:{" "} */}
-                              {new Date(review.date).toLocaleString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                                second: "numeric",
-                              })}
-                            </p>
+                            {/* <p className="text-black text-left px-4">
+                              <b>{review.user}</b>
+                            </p> */}
+                            <div className="d-flex justify-content-center">
+                              <Card className="border-0 ">
+                                <p className="text-center text-secondary">
+                                  <b>
+                                    <span className="text-black">
+                                      {review.user}
+                                    </span>{" "}
+                                    says
+                                    <span
+                                      className={
+                                        review.recommendation === "Recommended"
+                                          ? "text-success"
+                                          : "text-danger"
+                                      }
+                                    >
+                                      {" "}
+                                      {review.recommendation}
+                                    </span>
+                                  </b>
+                                </p>
+                                <div className="d-flex ">
+                                  <Container
+                                    className="text-center w-50 "
+                                    style={{ wordWrap: "break-word" }}
+                                  >
+                                    {review.description}
+                                  </Container>
+                                </div>
+                              </Card>
+                            </div>
                           </>
                         )}
                         {userInfo && userInfo.username === review.user && (
                           <Button
+                            className="mx-auto d-block mt-2"
                             variant="danger"
                             onClick={(e) => deleteReview(e, review._id)}
+                            style={{ fontSize: "14px", padding: "2px 5px" }} // Adjust font size and padding
                           >
                             Delete
                           </Button>
@@ -434,7 +508,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
                           </div>
                         )}
 
-                        <div className="mt-2 " key={review._id}>
+                        <div className="mt-2 text-center " key={review._id}>
                           {" "}
                           <button
                             className="border-0 bg-gray  shake"
@@ -455,6 +529,17 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
                             </span>
                           </button>
                         </div>
+                        <p className="text-center text-secondary">
+                          {/* Posted On:{" "} */}
+                          {new Date(review.date).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            second: "numeric",
+                          })}
+                        </p>
 
                         <hr />
                       </div>
@@ -462,7 +547,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
                 </Card>
               </div>
             </div>
-          </Card>
+          </Container>
         </Container>
       </div>
     </Container>
