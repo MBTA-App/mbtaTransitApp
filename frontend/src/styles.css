@@ -52,7 +52,8 @@
 
 /* Filtered Card */
 .filtered-card {
-  background-color: #ffc107 !important; /* Matches Bootstrap's warning button color */
+  background-color: #ffc107 !important;
+  color: white !important; /* Matches Bootstrap's warning button color */
 }
 /* Default Card */
 .default-card {
@@ -62,7 +63,8 @@
 
 /* Hover effect for default card */
 .default-card:hover {
-  background-color: #f8f9fa !important; /* Light gray background on hover */
+  background-color: #f8f9fa !important;
+  /* Light gray background on hover */
 }
 
 /* Hover effect for green cards */

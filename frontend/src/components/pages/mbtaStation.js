@@ -137,7 +137,7 @@ function Stations() {
         {!filterActive && (
           <>
             <button
-              className="btn btn-success me-2"
+              className="btn btn-secondary me-2"
               onClick={() => handleLineFilter("")}
             >
               All
