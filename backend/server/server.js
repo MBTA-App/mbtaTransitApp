@@ -38,8 +38,25 @@ app.use("/userReview", userDeleteReview);
 app.use("/userReview", getAllReviews);
 app.use("/reviewRating", reviewRating);
 
-app.listen(SERVER_PORT, (req, res) => {
-  console.log(
-    `The backend service is running on port ${SERVER_PORT} and waiting for requests.`
-  );
-});
+//app.listen(SERVER_PORT, (req, res) => {
+  //console.log(
+   // `The backend service is running on port ${SERVER_PORT} and waiting for requests.`
+  //);
+//});
+
+console.log(`The node environment is: ${process.env.NODE_ENV}`);
+
+
+
+
+// Production environment: connect to the database and start listening for requests
+if (process.env.NODE_ENV !== "test") {
+    dbConnection();
+    app.listen(SERVER_PORT, () => {
+      setTimeout(() => {
+        console.log(`All services are running on port: ${SERVER_PORT}`);
+      }, 1000); // Add a 1-second delay
+    });
+}
+
+module.exports = app; // Export the app instance for unit testing via supertest.
