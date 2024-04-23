@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Row";
 
+
 function Alerts() {
   const [alerts, setAlerts] = useState([]);
 
@@ -23,59 +24,23 @@ function Alerts() {
   }, []);
 
   return (
-    <Container>
-      <div>
-        <h1 className="text-center mt-4">MBTA Recent Alerts</h1>
+    <div style={{ margin: '0 auto', maxWidth: '900px' }}>
+      <div className="text-center mt-4">
+        <h1>MBTA Recent Alerts</h1>
       </div>
-      <div className="mb-2">
-        <Row xs={1} md={1} lg={1} xl={1} className="g-6 mt-4">
-          {alerts.map((alert) => (
-            <Col key={alert.id}>
-              <Card
-                body
-                outline
-                color="light"
-                className="mb-3 mx-auto"
-                style={{ maxWidth: "900px", backgroundColor: "#FFD2D2" }}
-              >
-                <Card.Body>
-                  <Row>
-                    <Col>
-                      <div className="d-flex Display-1 align-items-center justify-content-between">
-                        <Card.Title>Alert</Card.Title>
-                        <div className="text-end">
-                          <Card.Title>
-                            {new Date(
-                              alert.attributes.updated_at
-                            ).toLocaleString()}
-                          </Card.Title>
-                        </div>
-                      </div>
-
-                      <Card.Text>
-                        <p>{alert.attributes.header}</p>
-                        <p>{alert.attributes.description}</p>
-                      </Card.Text>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-
-        <h1>Alerts!</h1>
+      <div className="mt-4">
         {alerts.map((alert) => (
-          <div key={alert.id}>
-            <h3>{alert.attributes.header}</h3>
-            <p>{alert.attributes.description}</p>
-            <small>
-              {new Date(alert.attributes.updated_at).toLocaleString()}
-            </small>
+          <div key={alert.id} style={{ marginBottom: '20px', backgroundColor: '#FFEB99', padding: '20px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h2 style={{ margin: '0', fontStyle: 'italic' }}>Alert</h2>
+              <small>{new Date(alert.attributes.updated_at).toLocaleString()}</small>
+            </div>
+            <p style={{ margin: '0', marginBottom: '10px' }}><em>{alert.attributes.header}</em></p>
+            <p style={{ margin: '0' }}><em>{alert.attributes.description}</em></p>
           </div>
         ))}
       </div>
-    </Container>
+    </div>
   );
 }
 

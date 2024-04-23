@@ -15,9 +15,11 @@ export default function Navbar() {
 
   return (
     <ReactNavbar
-      bg="dark"
+      
       variant="dark"
       style={{
+        overflowY: "scroll",
+        backgroundColor:"#354F6B",
         position: "fixed",
         top: "0%",
         left: 0,
@@ -31,12 +33,13 @@ export default function Navbar() {
           <Nav.Link
             href="/home"
             style={{
+              color:"#F5F5F5",
               marginBottom: "70%",
               marginTop: "300%",
               fontFamily: "Arial, sans-serif",
               fontWeight: "bold",
               fontSize: "120%",
-              marginLeft: "2%",
+              marginLeft: "5%",
             }}
           >
             <i>Home</i>
@@ -44,6 +47,7 @@ export default function Navbar() {
           <Nav.Link
             href="/mbtaTracker"
             style={{
+              color:"#F5F5F5",
               marginBottom: "70%",
               marginTop: "40%",
               fontFamily: "Arial, sans-serif",
@@ -57,6 +61,7 @@ export default function Navbar() {
           <Nav.Link
             href="/mbtaAlert"
             style={{
+              color:"#F5F5F5",
               marginBottom: "70%",
               marginTop: "40%",
               fontFamily: "Arial, sans-serif",
@@ -70,6 +75,7 @@ export default function Navbar() {
           <Nav.Link
             href="/mbtaStation"
             style={{
+              color:"#F5F5F5",
               marginBottom: "70%",
               marginTop: "40%",
               fontFamily: "Arial, sans-serif",
@@ -83,7 +89,7 @@ export default function Navbar() {
           <NavDropdown
             title={<BsPerson size="40" />}
             id="basic-nav-dropdown"
-            style={{ position: "absolute", top: "1%", left: 0 }}
+            style={{ color:"#F5F5F5",position: "absolute", top: "1%", left: 0 }}
           >
             <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
             <NavDropdown.Item href="/privateUserProfile">

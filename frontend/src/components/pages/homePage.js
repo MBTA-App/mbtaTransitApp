@@ -27,8 +27,8 @@ const HomePage = () => {
     );
   const { id, email, username, password } = user;
   return (
-    <Container style={{ padding: "4px", marginLeft: "13%" }}>
-      <Card className="d-flex align-items-center justify-items-center p-4 m-4">
+    <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+      <Card className="p-4" style={{ maxWidth: "600px", backgroundColor: "#FFEB99" }}>
         <Card.Body>
           <>
             <div>
@@ -36,23 +36,23 @@ const HomePage = () => {
                 Welcome
                 <span className="username"> @{username}</span>
               </h3>
-              <h3>
-                Your userId in mongo db is
-                <span className="userId"> {id}</span>
+              <h3 className="text-center mb-4">
+                <i>MongoDB UserID:</i><p></p> 
+                <span className="userId">{id}</span>
               </h3>
-              <h3>
-                Your registered email is
-                <span className="email"> {email}</span>
+              <h3 className="text-center mb-4">
+                  <i>Registered Email:</i> <p></p>
+                <span className="email">{email}</span>
               </h3>
-              <h3>
-                Your password is
+              <h3 className="text-center mb-4" style={{ fontSize: "24px" }}>
+                Password:
                 <div>
-                  <span className="password"> {password} ( hashed )</span>
+                  <span className="password">{password} (hashed)</span>
                 </div>
               </h3>
             </div>
             <div className="text-center mt-4">
-              <button onClick={(e) => handleClick(e)}>Log Out</button>
+              <button onClick={(e) => handleClick(e)} style={{ backgroundColor: "#354F6B", color: "#FFFFFF", padding: "10px 20px", borderRadius: "5px", border: "none", fontSize: "16px", fontWeight: "bold" }}>Log Out</button>
             </div>
           </>
         </Card.Body>
