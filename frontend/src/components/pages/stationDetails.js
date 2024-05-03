@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { FaAngleDown } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 import { api } from "../../utilities/api";
 import Map from "../trainMap";
@@ -26,11 +26,13 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
   const [submitStatus, setSubmitStatus] = useState(null); // New state for submit status
   const [userInfo, setUserInfo] = useState(null); // New state for user information
   const [deleteStatus, setDeleteStatus] = useState(null);
+  const [alerts, setAlerts] = useState([]);
 
   const [recommendationCount, setRecommendationCount] = useState(0);
   const [notRecommendationCount, setNotRecommendationCount] = useState(0);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [address, setAddress] = useState("");
+  const [icon, setIcon] = useState(<FaAngleDown />); // Initialize icon state
 
   const [reviewData, setReviewData] = useState({
     //default values
@@ -282,6 +284,19 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
       }
     }
 
+    async function fetchAlerts() {
+      try {
+        const response = await axios.get(
+          `https://api-v3.mbta.com/alerts?filter[stop]=${stationId}`
+        );
+        const alertData = response.data.data;
+
+        setAlerts(alertData);
+      } catch (error) {
+        console.log("error in getting alerts", error);
+      }
+    }
+
     async function fetchData() {
       // Fetch reviews and station details concurrently
       await Promise.all([fetchReviews(), fetchStationDetails()]);
@@ -290,6 +305,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
     }
 
     fetchData();
+    fetchAlerts();
   }, [stationId, address]);
 
   useEffect(() => {
@@ -328,6 +344,21 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
               ? station.attributes.description.split("-")[1]?.trim()
               : "Not available"}
           </h1>
+          <div>
+            <Card className="mb-2 border-0 rounded shadow bg-danger text-white">
+              <h2 className="d-flex justify-content-center mt-2 w-1/2 ">
+                Alerts
+              </h2>
+              <ul>
+                {alerts.map((alert) => (
+                  <li key={alert.id}>
+                    <p>{alert.attributes.header}</p>
+                    {/* <p>{alert.attributes.effect}</p> */}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </div>
           <Card>
             <Map
               longitude={station.attributes.longitude}
@@ -378,10 +409,13 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
           <div>
             <Button
               className="mx-auto d-block bg-success"
-              onClick={handleToggleReviewForm}
+              onClick={() => {
+                handleToggleReviewForm();
+                setIcon(showReviewForm ? <FaAngleDown /> : <FaAngleUp />); // Change icon based on state
+              }}
             >
               {showReviewForm ? "Create a review " : "Create a review"}
-              <FaAngleDown style={{ marginLeft: "5px" }} />
+              {icon} {/* Render the icon based on the state */}
             </Button>
             {showReviewForm && (
               <Card className="border-0">
