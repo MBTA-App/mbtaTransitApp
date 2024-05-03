@@ -15,7 +15,7 @@ const Trackerpage = () => {
   return (
     <div className='vh-100'>
       <Card
-        style={{ height: '500rem', marginLeft: '10rem',minWidth:'300px',zIndex:'1'}}
+        style={{ height: '500rem', marginLeft: '10rem',minWidth:'300px',zIndex:'1',maxHeight:"100%"}}
         className='text-center bg-white shadow-xl rounded border-0'
       >
         <Card.Body className=''>
