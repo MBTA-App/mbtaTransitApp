@@ -17,7 +17,7 @@ export default function Navbar() {
     <ReactNavbar
       variant='dark'
       style={{
-        backgroundColor: '#354F6B',
+        backgroundColor: '#165c96',
         position: 'fixed',
         top: '0%',
         left: 0,
@@ -31,7 +31,7 @@ export default function Navbar() {
           <Nav.Link
             href='/home'
             style={{
-              color: '#F5F5F5',
+              color: '#FFFFFF',
               marginBottom: '70%',
               marginTop: '300%',
               fontFamily: 'Arial, sans-serif',
@@ -45,7 +45,7 @@ export default function Navbar() {
           <Nav.Link
             href='/mbtaTracker'
             style={{
-              color: '#F5F5F5',
+              color: '#FFFFFF',
               marginBottom: '70%',
               marginTop: '40%',
               fontFamily: 'Arial, sans-serif',

@@ -324,7 +324,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
           </h1>
           <Container>
             <div className='d-flex justify-content-center'>
-              <Card className='mb-2 border-0 rounded shadow bg-danger text-white ' style={{ width: '50%' }}>
+              <Card className='mb-2 border-0 rounded shadow bg-danger text-white ' style={{ width: '100%' }}>
                 {alerts.length === 0 ? (
                   <p className='d-flex justify-content-center mt-2 w-full'>No Recent Alerts</p>
                 ) : (

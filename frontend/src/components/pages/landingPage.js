@@ -35,8 +35,11 @@ const Landingpage = () => {
             <div>
               <h1 style={{ fontWeight: 'bold', fontSize: '5rem' }}>MBTAXpress</h1>
             </div>
-            <h3 className='mt-4 rounded-pill text-white p-4' style={{ backgroundColor: '#354F6B' }}>
-              Welcome back, <span style={{ color: 'orange', fontWeight: 'bold' }}>{user.username}</span>
+            <h3
+              className='mt-4 rounded-pill text-white p-4 d-flex justify-content-center '
+              style={{ backgroundColor: '#165c96', width: '100%' }}
+            >
+              Welcome back, <span style={{ color: 'orange', fontWeight: 'bold' }}> {user.username}</span>
             </h3>
           </div>
           {/* <div
