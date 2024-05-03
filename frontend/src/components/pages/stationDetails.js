@@ -346,7 +346,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
           </h1>
           <div>
             <Card className="mb-2 border-0 rounded shadow bg-danger text-white">
-              <h2 className="d-flex justify-content-center mt-2 w-1/2 ">
+              <h2 className="d-flex justify-content-center mt-2 w-full ">
                 Alerts
               </h2>
               <ul>
