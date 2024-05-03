@@ -293,37 +293,36 @@ const EditUserPage = () => {
             {
               <div>
                 {deleteMessage && <div className='alert alert-danger'>{deleteMessage}</div>}
-                    <h4>My Favorite Stations:</h4>
-                       <ul>
-                      {userFavorites.map(favorite => (
-                        <li key={favorite.id}>
-                        
+                <h4>My Favorite Stations:</h4>
+                <ul>
+                  {userFavorites.map(favorite => (
+                    <li key={favorite.id}>
                       <div style={{ display: 'flex', alignItems: 'center' }}>
-                      
-                    <div style={{ flex: '1' }}>{favorite.name}</div>
-         
-                   <div>
-                    <button
-                     onClick={() => handleDelete(favorite.id)}
-                    style={{
-                            marginTop:'4px',
-                            backgroundColor: '#B30000',
-                            border: 'none',
-                            color: 'white',
-                            padding: '10px 20px',
-                            textAlign: 'center',
-                            textDecoration: 'none',
-                            borderRadius: '5px',
-                            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)'
-                          }}
-                    >Delete
-                    </button>
-          </div>
-        </div>
-      </li>
-    ))}
-  </ul>
-</div>         
+                        <div style={{ flex: '1' }}>{favorite.name}</div>
+
+                        <div>
+                          <button
+                            onClick={() => handleDelete(favorite.id)}
+                            style={{
+                              marginTop: '4px',
+                              backgroundColor: '#B30000',
+                              border: 'none',
+                              color: 'white',
+                              padding: '10px 20px',
+                              textAlign: 'center',
+                              textDecoration: 'none',
+                              borderRadius: '5px',
+                              boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             }
           </Form>
         </Card.Body>
