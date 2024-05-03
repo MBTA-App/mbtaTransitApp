@@ -53,6 +53,8 @@ const EditUserPage = () => {
     try {
       const response = await fetch(`https://api-v3.mbta.com/stops/${stationId}`)
       const data = await response.json()
+      console.log('station name', data)
+
       return data.data.attributes.name
     } catch (error) {
       console.error('Error fetching station name:', error)
@@ -63,26 +65,36 @@ const EditUserPage = () => {
   //module used to fetch the user favorite station data to the frontend
   const fetchUserFavorites = async () => {
     try {
-      const response = await axios.get(getFavoritesUrl + userId)
-      console.log('User favorites response:', response.data) // Log the server response
-      const userFavoritesData = response.data
+      // Fetch stations first
+      const responseStations = await fetch('https://api-v3.mbta.com/stops?filter[route_type]=1')
+      const dataStations = await responseStations.json()
+      const fetchedStations = dataStations.data.map(station => ({
+        id: station.id,
+        name: station.attributes.name,
+      }))
+
+      setStations(fetchedStations) // Update stations state
+
+      // Fetch user favorites using the updated stations
+      const responseFavorites = await axios.get(getFavoritesUrl + userId)
+      console.log('User favorites response:', responseFavorites.data) // Log the server response
+      const userFavoritesData = responseFavorites.data
 
       if (!Array.isArray(userFavoritesData)) {
         console.error('User favorites data is not an array:', userFavoritesData)
         return
       }
 
-      console.log('Stations:', stations) // Log the stations data
+      console.log('Stations:', fetchedStations) // Log the stations data
 
-      // Filter out duplicate station IDs
-      const uniqueStationIds = [...new Set(userFavoritesData.map(favorite => favorite.stationId))]
-
+      // Fetch station names for each favorite asynchronously
       const favoritesWithData = await Promise.all(
         userFavoritesData.map(async favorite => {
+          console.log('Fetching station name for stationId:', favorite.stationId)
           const stationName = await fetchStationName(favorite.stationId)
           return {
             id: favorite.stationId,
-            name: stationName || `Station ID: (${favorite.stationId})`,
+            name: stationName,
           }
         })
       )
@@ -150,14 +162,15 @@ const EditUserPage = () => {
 
   const handleFavoriteSubmit = async event => {
     event.preventDefault()
-    // Find the selected station object
-    const selectedStationObject = stations.find(station => station.name === selectedStation)
 
     // Check if a station is selected
     if (!selectedStation) {
       setErrors({ station: 'Please select a favorite station' })
       return
     }
+
+    // Find the selected station object
+    const selectedStationObject = stations.find(station => station.name === selectedStation)
 
     // Extract the station ID
     const stationId = selectedStationObject.id
@@ -174,18 +187,16 @@ const EditUserPage = () => {
       // Extract the ID of the newly added favorite station from the response
       const newFavoriteId = response.data.stationId
 
-      console.log(newFavoriteId)
+      console.log('favorite id', newFavoriteId)
+      const stationName = await fetchStationName(stationId)
 
       // Construct the new favorite object
       const newFavorite = {
         id: newFavoriteId,
-        // Other properties of the favorite station if available
+        name: stationName,
       }
 
       // Update the userFavorites state by appending the new favorite
-      console.log('New Favorite:', newFavorite)
-      console.log('New Favorite:', newFavoriteId)
-
       setUserFavorites([...userFavorites, newFavorite])
 
       setSuccessMessage('Favorite station updated successfully!')
@@ -292,7 +303,7 @@ const EditUserPage = () => {
             <p></p>
             {
               <div>
-                {deleteMessage && <div className='alert alert-danger'>{deleteMessage}</div>}
+                {deleteMessage && <div className='alert alert-success'>{deleteMessage}</div>}
                 <h4>My Favorite Stations:</h4>
                 <ul>
                   {userFavorites.map(favorite => (

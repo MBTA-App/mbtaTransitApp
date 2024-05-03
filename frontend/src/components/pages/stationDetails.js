@@ -36,12 +36,6 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
   const [icon, setIcon] = useState(<FaAngleDown />) // Initialize icon state
   const [displayedAlerts, setDisplayedAlerts] = useState([])
 
-  useEffect(() => {
-    // Only add alerts that are not already displayed
-    const newAlerts = alerts.filter(alert => !displayedAlerts.find(displayedAlert => displayedAlert.id === alert.id))
-    setDisplayedAlerts([...displayedAlerts, ...newAlerts])
-  }, [alerts, displayedAlerts])
-
   const [reviewData, setReviewData] = useState({
     //default values
     recommendation: '',
@@ -283,18 +277,7 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
         const response = await axios.get(`https://api-v3.mbta.com/alerts?filter[stop]=${stationId}`)
         const alertData = response.data.data
 
-        // Trigger animation when new alerts are fetched
-        if (alertData.length > 0) {
-          // If there are new alerts, clear existing alerts first
-          setAlerts([])
-          // Then, set the new alerts after a short delay to allow for animation reset
-          setTimeout(() => {
-            setAlerts(alertData)
-          }, 500) // Adjust delay as needed
-        } else {
-          // If no new alerts, simply update the alerts state
-          setAlerts(alertData)
-        }
+        setAlerts(alertData)
       } catch (error) {
         console.log('error in getting alerts', error)
       }
