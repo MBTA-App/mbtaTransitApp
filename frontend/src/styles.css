@@ -86,3 +86,25 @@
 .orange-card:hover {
   background-color: #e0a800 !important; /* Darker shade of orange */
 }
+
+.alert-container {
+  overflow: hidden;
+}
+
+.alert-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.alert-item {
+  animation: slideIn 25s linear infinite;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

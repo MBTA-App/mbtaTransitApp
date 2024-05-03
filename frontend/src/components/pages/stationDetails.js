@@ -15,6 +15,7 @@ import Col from 'react-bootstrap/Col'
 import getUserInfo from '../../utilities/decodeJwt'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import { satisfies } from 'semver'
+import styles from '../../styles.css'
 
 function StationDetails({ recommendCount, notRecommendedCount }) {
   const [deleteStatuses, setDeleteStatuses] = useState({})
@@ -33,6 +34,13 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
   const [showReviewForm, setShowReviewForm] = useState(false)
   const [address, setAddress] = useState('')
   const [icon, setIcon] = useState(<FaAngleDown />) // Initialize icon state
+  const [displayedAlerts, setDisplayedAlerts] = useState([])
+
+  useEffect(() => {
+    // Only add alerts that are not already displayed
+    const newAlerts = alerts.filter(alert => !displayedAlerts.find(displayedAlert => displayedAlert.id === alert.id))
+    setDisplayedAlerts([...displayedAlerts, ...newAlerts])
+  }, [alerts, displayedAlerts])
 
   const [reviewData, setReviewData] = useState({
     //default values
@@ -275,7 +283,18 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
         const response = await axios.get(`https://api-v3.mbta.com/alerts?filter[stop]=${stationId}`)
         const alertData = response.data.data
 
-        setAlerts(alertData)
+        // Trigger animation when new alerts are fetched
+        if (alertData.length > 0) {
+          // If there are new alerts, clear existing alerts first
+          setAlerts([])
+          // Then, set the new alerts after a short delay to allow for animation reset
+          setTimeout(() => {
+            setAlerts(alertData)
+          }, 500) // Adjust delay as needed
+        } else {
+          // If no new alerts, simply update the alerts state
+          setAlerts(alertData)
+        }
       } catch (error) {
         console.log('error in getting alerts', error)
       }
@@ -324,18 +343,18 @@ function StationDetails({ recommendCount, notRecommendedCount }) {
           </h1>
           <Container>
             <div className='d-flex justify-content-center'>
-              <Card className='mb-2 border-0 rounded shadow bg-danger text-white ' style={{ width: '100%' }}>
+              <Card className='mb-2 border-0 rounded shadow bg-danger text-white' style={{ width: '100%' }}>
                 {alerts.length === 0 ? (
-                  <p className='d-flex justify-content-center mt-2 w-full'>No Recent Alerts</p>
+                  <p className='d-flex justify-content-center mt-2 w-full'>
+                    There are no ongoing alerts for this station.
+                  </p>
                 ) : (
-                  <div>
+                  <div className='alert-container'>
                     <h2 className='d-flex justify-content-center mt-2 '>Alerts</h2>
-                    <ul>
+                    <ul className='alert-list'>
                       {alerts.map(alert => (
-                        <li key={alert.id}>
+                        <li key={alert.id} className='alert-item'>
                           <p>{alert.attributes.header}</p>
-                          {/* Uncomment below if you want to render 'effect' */}
-                          {/* <p>{alert.attributes.effect}</p> */}
                         </li>
                       ))}
                     </ul>
