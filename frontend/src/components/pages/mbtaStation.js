@@ -110,7 +110,7 @@ function Stations() {
   }, [stations]);
 
   return (
-    <Container style={{ padding: "4px", marginLeft: "12%" }}>
+    <Container style={{ padding: "2%",marginLeft:'20rem',marginRight:"20rem" }}>
       <Card className="border-0 bg-light mb-4 ">
         <header className="jumbotron text-center">
           <div className="container">

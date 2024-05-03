@@ -33,7 +33,7 @@ function Alerts() {
   }
 
   return (
-    <div style={{ margin: '0 auto', maxWidth: '900px' }}>
+    <div style={{ margin: '0 auto', maxWidth: '70%',marginLeft:'25%',marginRight:'15%',zIndex:'1' }}>
       <div className=' rounded' style={{ backgroundColor: '#165c96' }}>
         <div className='text-center mt-4 text-white'>
           <h1 style={{ fontSize: '3rem', width: '' }}>All MBTA Alerts</h1>

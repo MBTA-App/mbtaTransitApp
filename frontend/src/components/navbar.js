@@ -17,13 +17,17 @@ export default function Navbar() {
     <ReactNavbar
       variant='dark'
       style={{
+        minWidth: '7rem',
+        maxWidth:'1rem',
         backgroundColor: '#165c96',
         position: 'fixed',
         top: '0%',
         left: 0,
         height: '100vh',
         width: '10%', // Adjust the width as needed
-        zIndex: '100%', // Ensure it's above other content
+        zIndex: '5', // Ensure it's above other content
+        borderTopRightRadius: "10px", //rounded corners
+        boxShadow: '2px 0px 4px rgba(0, 0, 0, 0.8)'
       }}
     >
       <Container>
@@ -87,7 +91,7 @@ export default function Navbar() {
           <NavDropdown
             title={<BsPerson size='50' />}
             id='basic-nav-dropdown'
-            style={{ color: '#F5F5F5', position: 'absolute', top: '1%', left: '5%' }}
+            style={{ color: '#F5F5F5', position: 'absolute', top: '1%', left: '13%' }}
           >
             <NavDropdown.Item href='/profile'>Profile</NavDropdown.Item>
             <NavDropdown.Item href='/privateUserProfile'>
