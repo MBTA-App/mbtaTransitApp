@@ -28,7 +28,7 @@ const HomePage = () => {
   const { id, email, username, password } = user;
   return (
     <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-      <Card className="p-4" style={{ maxWidth: "600px", backgroundColor: "#FFEB99" }}>
+      <Card className="p-4" style={{ maxWidth: "30rem", backgroundColor: "#FFEB99", marginLeft:'6rem' }}>
         <Card.Body>
           <>
             <div>
