@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Button from 'react-bootstrap/Button'
@@ -12,19 +12,18 @@ const Register = () => {
   const [error, setError] = useState('')
   const navigate = useNavigate()
   const [bgColor, setBgColor] = useState(SECONDARY_COLOR)
-  
+
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value })
   }
 
-  
   let labelStyling = {
     color: PRIMARY_COLOR,
     fontWeight: 'bold',
     textDecoration: 'none',
-    textShadow: '2px 2px 4px #000000'
+    textShadow: '2px 2px 4px #000000',
   }
-  let backgroundStyling = { 
+  let backgroundStyling = {
     background: bgColor,
     backgroundImage: 'url(https://bdc2020.o0bc.com/wp-content/uploads/2019/09/orangelinecar-768x432.jpeg?width=800)', // Add your image URL here
     backgroundSize: 'cover', // This will make sure the image covers the whole page
@@ -39,7 +38,7 @@ const Register = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      let audio = new Audio('mixkit-train-door-close-1638.wav'); 
+      let audio = new Audio('mixkit-train-door-close-1638.wav')
       audio.play()
       const { data: res } = await axios.post(url, data)
       const { accessToken } = res

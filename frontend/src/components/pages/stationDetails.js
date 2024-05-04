@@ -13,9 +13,6 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import getUserInfo from '../../utilities/decodeJwt'
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
-import { satisfies } from 'semver'
-import styles from '../../styles.css'
 
 function StationDetails({ recommendCount, notRecommendedCount }) {
   const [deleteStatuses, setDeleteStatuses] = useState({})

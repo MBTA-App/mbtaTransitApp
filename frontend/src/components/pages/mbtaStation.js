@@ -8,12 +8,10 @@ import axios from 'axios'
 import getUserInfo from '../../utilities/decodeJwt'
 import { FaStar } from 'react-icons/fa'
 import '../../styles.css'
-import StationDetails from './stationDetails'
 
 function Stations() {
   const [stations, setStations] = useState([])
-  const [recommendCount, setRecommendCount] = useState(0)
-  const [notRecommendedCount, setNotRecommendedCount] = useState(0)
+
   const [userFavorites, setUserFavorites] = useState([])
   const [filterActive, setFilterActive] = useState(false)
   const [filteredStations, setFilteredStations] = useState([])
@@ -23,9 +21,6 @@ function Stations() {
     async function fetchData() {
       const result = await axios('https://api-v3.mbta.com/stops?filter[route_type]=1')
       setStations(result.data.data)
-      // Placeholder values for recommendCount and notRecommendedCount
-      setRecommendCount(10)
-      setNotRecommendedCount(5)
     }
     fetchData()
   }, [])

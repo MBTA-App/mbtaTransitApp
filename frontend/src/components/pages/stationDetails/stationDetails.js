@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import Map from '../../trainMap'
 import Card from 'react-bootstrap/Card'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import getUserInfo from '@/utilities/decodeJwt'
@@ -86,25 +85,6 @@ function StationDetails() {
     fetchReviews()
     fetchStationDetails()
   }, [stationId])
-
-  const [basic] = useState([
-    {
-      tooltip: 'Very Bad',
-    },
-    {
-      tooltip: 'Poor',
-    },
-    {
-      tooltip: 'Ok',
-      choosed: true,
-    },
-    {
-      tooltip: 'Good',
-    },
-    {
-      tooltip: 'Excellent',
-    },
-  ])
 
   if (!station) {
     return <div className='d-flex justify-content-center align-content-center'>Loading...</div>

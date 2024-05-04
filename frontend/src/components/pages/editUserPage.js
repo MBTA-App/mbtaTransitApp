@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
+
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import getUserInfo from '../../utilities/decodeJwt'
 
 const EditUserPage = () => {
@@ -32,7 +31,7 @@ const EditUserPage = () => {
   useEffect(() => {
     fetchStations()
     fetchUserFavorites()
-  }, [])
+  })
 
   const fetchStations = async () => {
     try {
@@ -75,7 +74,6 @@ const EditUserPage = () => {
       console.log('Stations:', stations) // Log the stations data
 
       // Filter out duplicate station IDs
-      const uniqueStationIds = [...new Set(userFavoritesData.map(favorite => favorite.stationId))]
 
       const favoritesWithData = await Promise.all(
         userFavoritesData.map(async favorite => {
@@ -138,7 +136,7 @@ const EditUserPage = () => {
         console.error('Error updating user info:', error)
         if (
           error.response &&
-          error.response.status != 409 &&
+          error.response.status !== 409 &&
           error.response.status >= 400 &&
           error.response.status <= 500
         ) {
@@ -214,9 +212,6 @@ const EditUserPage = () => {
     return newErrors
   }
 
-  const handleCancel = () => {
-    navigate('/privateuserprofile')
-  }
   return (
     <div style={{ marginLeft: '8rem', width: '400px', marginRight: '2rem' }}>
       <Card body outline color='success' className='mx-1 my-2' style={{ width: '400px' }}>
