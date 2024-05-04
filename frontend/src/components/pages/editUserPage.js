@@ -75,17 +75,17 @@ const EditUserPage = () => {
 
       // Filter out duplicate station IDs
 
-      const favoritesWithData = await Promise.all(
-        userFavoritesData.map(async favorite => {
-          const stationName = await fetchStationName(favorite.stationId)
-          return {
-            id: favorite.stationId,
-            name: stationName || `Station ID: (${favorite.stationId})`,
-          }
-        })
-      )
+      // const favoritesWithData = await Promise.all(
+      //   userFavoritesData.map(async favorite => {
+      //     const stationName = await fetchStationName(favorite.stationId)
+      //     return {
+      //       id: favorite.stationId,
+      //       name: stationName,
+      //     }
+      //   })
+      // )
 
-      setUserFavorites(favoritesWithData)
+      // setUserFavorites(favoritesWithData)
     } catch (error) {
       console.error('Error fetching user favorites:', error)
     }
@@ -175,18 +175,21 @@ const EditUserPage = () => {
       // Extract the ID of the newly added favorite station from the response
       const newFavoriteId = response.data.stationId
 
-      console.log(newFavoriteId)
+      console.log('favorite id', newFavoriteId)
+
+      // Fetch the station name
+      const stationName = await fetchStationName(stationId)
 
       // Construct the new favorite object
       const newFavorite = {
         id: newFavoriteId,
+        name: stationName,
         // Other properties of the favorite station if available
       }
 
-      // Update the userFavorites state by appending the new favorite
       console.log('New Favorite:', newFavorite)
-      console.log('New Favorite:', newFavoriteId)
 
+      // Update the userFavorites state by appending the new favorite
       setUserFavorites([...userFavorites, newFavorite])
 
       setSuccessMessage('Favorite station updated successfully!')
@@ -213,7 +216,7 @@ const EditUserPage = () => {
   }
 
   return (
-    <div style={{ marginLeft: '8rem', width: '400px', marginRight: '2rem' }}>
+    <div>
       <Card body outline color='success' className='mx-1 my-2' style={{ width: '400px' }}>
         <Card.Title>Edit User Information</Card.Title>
         <Card.Body>
