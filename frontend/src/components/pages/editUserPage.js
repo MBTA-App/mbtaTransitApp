@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
-
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import getUserInfo from '../../utilities/decodeJwt'
@@ -124,7 +125,10 @@ const EditUserPage = () => {
     } else {
       try {
         // Send request to update user info
-        const { data: res } = await axios.post(url, { ...form, userId })
+        const { data: res } = await axios.post(`${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`, {
+          ...form,
+          userId,
+        })
         const { accessToken } = res
         localStorage.setItem('accessToken', accessToken)
         setSuccessMessage('User info updated successfully!')
