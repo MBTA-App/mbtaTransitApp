@@ -41,7 +41,6 @@ const Register = () => {
       let audio = new Audio('mixkit-train-door-close-1638.wav')
       audio.play()
       const { data: res } = await axios.post(url, data)
-      const { accessToken } = res
       //store token in localStorage
       navigate('/login')
     } catch (error) {
