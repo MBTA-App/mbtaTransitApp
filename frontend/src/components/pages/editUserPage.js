@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
+
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import getUserInfo from '../../utilities/decodeJwt'
 
 const EditUserPage = () => {
   const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/editUser`
-  const favoriteUrl = 'http://localhost:8081/userFav/userFavorite'
-  const getFavoritesUrl = 'http://localhost:8081/userFav/getFavorites/'
+  const favoriteUrl = `${process.env.REACT_APP_BACKEND_SERVER_URI}/userFav/userFavorite`
+  const getFavoritesUrl = `${process.env.REACT_APP_BACKEND_SERVER_URI}/userFav/getFavorites/`
   const navigate = useNavigate()
 
   // Extract user ID from the user object
@@ -105,7 +104,7 @@ const EditUserPage = () => {
 
   const handleDelete = async favoriteId => {
     try {
-      await axios.delete(`http://localhost:8081/userFav/deleteFavorites/${userId}/${favoriteId}`)
+      await axios.delete(`${process.env.REACT_APP_BACKEND_SERVER_URI}/userFav/deleteFavorites/${userId}/${favoriteId}`)
       setUserFavorites(userFavorites.filter(favorite => favorite.id !== favoriteId))
 
       setDeleteMessage('Favorite station deleted successfully!')
@@ -215,8 +214,8 @@ const EditUserPage = () => {
     navigate('/privateuserprofile')
   }
   return (
-    <div style={{marginLeft:'8rem',width:"400px",marginRight:'2rem' }}>
-      <Card body outline color='success' className='mx-1 my-2' style={{width:"400px" }}>
+    <div style={{ marginLeft: '8rem', width: '400px', marginRight: '2rem' }}>
+      <Card body outline color='success' className='mx-1 my-2' style={{ width: '400px' }}>
         <Card.Title>Edit User Information</Card.Title>
         <Card.Body>
           {successMessage && <div className='alert alert-success'>{successMessage}</div>}
