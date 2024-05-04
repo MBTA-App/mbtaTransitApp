@@ -31,7 +31,7 @@ const EditUserPage = () => {
   useEffect(() => {
     fetchStations()
     fetchUserFavorites()
-  })
+  }, [])
 
   const fetchStations = async () => {
     try {
@@ -73,19 +73,17 @@ const EditUserPage = () => {
 
       console.log('Stations:', stations) // Log the stations data
 
-      // Filter out duplicate station IDs
+      const favoritesWithData = await Promise.all(
+        userFavoritesData.map(async favorite => {
+          const stationName = await fetchStationName(favorite.stationId)
+          return {
+            id: favorite.stationId,
+            name: stationName,
+          }
+        })
+      )
 
-      // const favoritesWithData = await Promise.all(
-      //   userFavoritesData.map(async favorite => {
-      //     const stationName = await fetchStationName(favorite.stationId)
-      //     return {
-      //       id: favorite.stationId,
-      //       name: stationName,
-      //     }
-      //   })
-      // )
-
-      // setUserFavorites(favoritesWithData)
+      setUserFavorites(favoritesWithData)
     } catch (error) {
       console.error('Error fetching user favorites:', error)
     }
