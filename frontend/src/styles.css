@@ -37,12 +37,16 @@
 
 /* Red Card */
 .red-card {
-  background-color: #dc3545 !important; /* Matches Bootstrap's danger button color */
+  background-color: #dc3545 !important;
+  color: #ffffff !important;
+
 }
 
 /* Blue Card */
 .blue-card {
   background-color: #007bff !important; /* Matches Bootstrap's primary button color */
+  color: #ffffff !important;
+
 }
 
 /* Orange Card */
@@ -57,13 +61,14 @@
 }
 /* Default Card */
 .default-card {
-  background-color: #ffffff !important; /* White color for default card */
-  color: #212529 !important; /* Text color for default card */
+  background-color: #0e476d !important; /* White color for default card */
+
+  color: white!important;
 }
 
 /* Hover effect for default card */
 .default-card:hover {
-  background-color: #f8f9fa !important;
+  background-color: #0a3852 !important;
   /* Light gray background on hover */
 }
 
@@ -96,6 +101,8 @@
   list-style-type: none;
   padding-left: 0;
 }
+
+
 
 .alert-item {
   animation: slideIn 25s linear infinite;

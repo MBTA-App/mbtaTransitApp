@@ -8,6 +8,7 @@ import axios from 'axios'
 import getUserInfo from '../../utilities/decodeJwt'
 import { FaStar } from 'react-icons/fa'
 import '../../styles.css'
+import { FaWheelchair } from 'react-icons/fa'
 
 function Stations() {
   const [stations, setStations] = useState([])
@@ -16,14 +17,49 @@ function Stations() {
   const [filterActive, setFilterActive] = useState(false)
   const [filteredStations, setFilteredStations] = useState([])
   const [lineFilter, setLineFilter] = useState(null)
+  const [address, setAddress] = useState('')
 
   useEffect(() => {
     async function fetchData() {
-      const result = await axios('https://api-v3.mbta.com/stops?filter[route_type]=1')
-      setStations(result.data.data)
+      try {
+        const result = await axios('https://api-v3.mbta.com/stops?filter[route_type]=1')
+        const stations = result.data.data
+
+        const stationsWithAddresses = await Promise.all(
+          stations.map(async station => {
+            const latitude = station.attributes.latitude
+            const longitude = station.attributes.longitude
+            const address = await getReverseGeocode(latitude, longitude)
+            return { ...station, address }
+          })
+        )
+
+        setStations(stationsWithAddresses)
+      } catch (error) {
+        console.error('Error fetching stations:', error)
+      }
     }
+
     fetchData()
   }, [])
+
+  const apiKey = 'AIzaSyCvBDAvo5zxxkI5AHcZM091KvLoZf5Oi2c'
+
+  const getReverseGeocode = async (latitude, longitude) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
+      )
+      if (response.data.results && response.data.results.length > 0) {
+        return response.data.results[0].formatted_address
+      } else {
+        return 'Address not found'
+      }
+    } catch (error) {
+      console.error('Error fetching reverse geocode:', error)
+      return 'Error fetching address'
+    }
+  }
 
   const userId = getUserInfo()?.id
 
@@ -42,8 +78,9 @@ function Stations() {
         }
       }
     }
+
     fetchUserFavorites()
-  }, [userId]) // Add userId and stations to dependency array
+  }, [userId, address]) // Add userId and stations to dependency array
 
   useEffect(() => {
     // Extract stationIds from userFavorites
@@ -88,14 +125,6 @@ function Stations() {
     }
   }
 
-  useEffect(() => {
-    console.log('User Favorites:', userFavorites)
-  }, [userFavorites])
-
-  useEffect(() => {
-    console.log('Stations:', stations)
-  }, [stations])
-
   return (
     <Container className=''>
       <Card.Body>
@@ -124,26 +153,41 @@ function Stations() {
               </button>
               {!filterActive && (
                 <>
-                  <button className='btn btn-secondary me-2' onClick={() => handleLineFilter('')}>
+                  <button
+                    className={`btn btn-secondary me-2 ${lineFilter === '' ? 'active' : ''}`}
+                    onClick={() => handleLineFilter('')}
+                  >
                     All
                   </button>
-                  <button className='btn btn-success me-2' onClick={() => handleLineFilter('Green')}>
+                  <button
+                    className={`btn btn-success me-2 ${lineFilter === 'Green' ? 'active' : ''}`}
+                    onClick={() => handleLineFilter('Green')}
+                  >
                     Green Line
                   </button>
-                  <button className='btn btn-danger me-2' onClick={() => handleLineFilter('Red')}>
+                  <button
+                    className={`btn btn-danger me-2 ${lineFilter === 'Red' ? 'active' : ''}`}
+                    onClick={() => handleLineFilter('Red')}
+                  >
                     Red Line
                   </button>
-                  <button className='btn btn-primary me-2' onClick={() => handleLineFilter('Blue')}>
+                  <button
+                    className={`btn btn-primary me-2 ${lineFilter === 'Blue' ? 'active' : ''}`}
+                    onClick={() => handleLineFilter('Blue')}
+                  >
                     Blue Line
                   </button>
-                  <button className='btn btn-warning me-2' onClick={() => handleLineFilter('Orange')}>
+                  <button
+                    className={`btn btn-warning me-2 ${lineFilter === 'Orange' ? 'active' : ''}`}
+                    onClick={() => handleLineFilter('Orange')}
+                  >
                     Orange Line
                   </button>
                 </>
               )}
             </div>
             {renderErrorMessage()}
-            <Row xs={1} md={2} lg={3} xl={3} className='g-4'>
+            <Row xs={1} md={2} lg={3} xl={3} xxxl={4} className='g-4'>
               {filterActive
                 ? filteredStations.map(station => (
                     <Col key={station.id}>
@@ -152,8 +196,10 @@ function Stations() {
                           body
                           outline
                           color='info'
-                          className='mb-3 mx-auto'
+                          className='mb-3 mx-auto mt-4 border-0 shadow'
                           style={{
+                            height: '100%',
+
                             maxWidth: '100%',
                             backgroundColor: 'lightgreen',
                             transition: 'background-color 0.3s',
@@ -163,6 +209,7 @@ function Stations() {
                         >
                           <FaStar
                             style={{
+                              fontSize: '2rem',
                               position: 'absolute',
                               top: 5,
                               left: 5,
@@ -170,25 +217,28 @@ function Stations() {
                               zIndex: 1, // To place the star above the card content
                             }}
                           />
-                          <Card.Body className='text-center '>
-                            <Card.Title>
+                          <Card.Body
+                            className='d-flex justify-content-center align-items-center flex-column text-center'
+                            style={{ minHeight: '300px', minWidth: '300px' }}
+                          >
+                            <Card.Title style={{ fontSize: '3.5rem' }}>
                               <strong>{station.attributes.name}</strong>
                             </Card.Title>
-                            <Card className='mx-4 text-start border-0 bg-transparent'>
-                              <Card.Text>
-                                <strong>Line:</strong>{' '}
-                                {station.attributes.description
-                                  ? station.attributes.description.split('-')[1]?.trim()
-                                  : 'Not available'}
+                            <Card.Text className='mx-4 text-start border-0 bg-transparent'>
+                              <p className='mt-2'>
+                                <strong>{station.address}</strong>
+                              </p>
+
+                              <Card.Text className='d-flex mt-4 justify-content-center align-items-center'>
+                                <span className='ms-4'>
+                                  {station.attributes.wheelchair_boarding === 1 ? (
+                                    <FaWheelchair style={{ fontSize: '3em' }} />
+                                  ) : (
+                                    'Inaccessible'
+                                  )}
+                                </span>
                               </Card.Text>
-                              <Card.Text>
-                                <strong>Municipality:</strong> {station.attributes.municipality}
-                              </Card.Text>
-                              <Card.Text>
-                                <strong>Accessibility:</strong>{' '}
-                                {station.attributes.wheelchair_boarding === 1 ? 'Accessible' : 'Inaccessible'}
-                              </Card.Text>
-                            </Card>
+                            </Card.Text>
                           </Card.Body>
                         </Card>
                       </Link>
@@ -200,33 +250,38 @@ function Stations() {
                         <Card
                           body
                           outline
-                          className={`mb-3 mx-auto ${filterActive && lineFilter === '' ? 'filtered-card' : ''} ${
-                            lineFilter ? lineFilter.toLowerCase() + '-card' : 'default-card'
-                          }`}
+                          className={`mb-3 mx-auto mt-4 border-0 shadow ${
+                            filterActive && lineFilter === '' ? 'filtered-card' : ''
+                          } ${lineFilter ? lineFilter.toLowerCase() + '-card' : 'default-card'}`}
                           style={{
+                            height: '90%',
                             maxWidth: '100%',
                             transition: 'background-color 0.3s',
+                            backgroundColor: 'grey',
                           }}
                         >
-                          <Card.Body className='text-center '>
-                            <Card.Title>
+                          <Card.Body
+                            className='d-flex justify-content-center align-items-center flex-column text-center'
+                            style={{ minHeight: '300px', minWidth: '300px' }}
+                          >
+                            <Card.Title style={{ fontSize: '3rem' }}>
                               <strong>{station.attributes.name}</strong>
                             </Card.Title>
-                            <Card className='mx-4 text-start border-0 bg-transparent'>
-                              <Card.Text>
-                                <strong>Line:</strong>{' '}
-                                {station.attributes.description
-                                  ? station.attributes.description.split('-')[1]?.trim()
-                                  : 'Not available'}
+                            <Card.Text className='mx-4 text-start border-0 bg-transparent'>
+                              <p className='mt-2'>
+                                <strong>{station.address}</strong>
+                              </p>
+
+                              <Card.Text className='d-flex mt-4 justify-content-center align-items-center'>
+                                <span className='ms-4'>
+                                  {station.attributes.wheelchair_boarding === 1 ? (
+                                    <FaWheelchair style={{ fontSize: '3em' }} />
+                                  ) : (
+                                    'Inaccessible'
+                                  )}
+                                </span>
                               </Card.Text>
-                              <Card.Text>
-                                <strong>Municipality:</strong> {station.attributes.municipality}
-                              </Card.Text>
-                              <Card.Text>
-                                <strong>Accessibility:</strong>{' '}
-                                {station.attributes.wheelchair_boarding === 1 ? 'Accessible' : 'Inaccessible'}
-                              </Card.Text>
-                            </Card>
+                            </Card.Text>
                           </Card.Body>
                         </Card>
                       </Link>
