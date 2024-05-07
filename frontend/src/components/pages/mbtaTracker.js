@@ -30,7 +30,7 @@ const Trackerpage = () => {
               className='rounded mb-2'
               style={{
                 backgroundColor: '#165c96',
-                minWidth: '95%',
+                minWidth: '65%',
               }}
             >
               <Card.Title className='display-4 text-white' style={{ fontSize: '3rem', fontWeight: 'bold' }}>

@@ -120,20 +120,27 @@ const Landingpage = () => {
     return (
       <div style={{ padding: '4px', marginLeft: '13%' }}>
         <div>
-          <h1 className='justify-content-center d-flex mt-4 ml-4 display-1 fw-bolder'>MBTAXpress</h1>
+          <h1 className='justify-content-center d-flex mt-4 ml-4 display-1 fw-bolder' style={{ color: '#165c96' }}>
+            MBTAXpress
+          </h1>
         </div>
         <Container className='d-flex flex-column align-items-center justify-content-center vh-100'>
           {/* Welcome Card */}
-          <div style={{ width: '50%', height: '30%' }} className='text-center shadow-xl rounded-pill border bg-dark'>
+          <div
+            style={{ width: '50%', height: '30%', backgroundColor: '#165c96' }}
+            className='text-center shadow-xl rounded-pill border'
+          >
             <div className='text-center d-flex flex-column align-items-center justify-content-center'>
-              <Card.Subtitle className='mb-2 mt-4 text-white display-5 '>Welcome</Card.Subtitle>
-              <Container className='row text-center text-md-center mt-4'>
+              <Card.Subtitle className='mb-2 mt-4 text-white  ' style={{ fontSize: '3rem' }}>
+                <strong>Welcome</strong>
+              </Card.Subtitle>
+              <Container className='row text-center text-md-center' style={{ marginTop: '4rem' }}>
                 <div className='col'>
                   <Card.Text className=''>
                     <a
                       href='/login'
-                      className='btn btn-primary mx-4'
-                      style={{ fontSize: '1.5em', padding: '10px 20px' }}
+                      className='btn mx-4'
+                      style={{ fontSize: '1.5em', padding: '10px 20px', color: 'white', backgroundColor: 'orange' }}
                     >
                       Login
                     </a>
@@ -144,7 +151,7 @@ const Landingpage = () => {
                     <a
                       href='/signup'
                       className='btn btn-primary mx-6'
-                      style={{ fontSize: '1.5em', padding: '10px 20px' }}
+                      style={{ fontSize: '1.5em', padding: '10px 20px', color: 'white', backgroundColor: 'orange' }}
                     >
                       Sign Up
                     </a>
@@ -158,12 +165,12 @@ const Landingpage = () => {
           </div>
           <Container style={{ marginTop: '5%' }}>
             {' '}
-            <Card className='border-0 bg-dark rounded-lg'>
+            <Card className='border-4 rounded-lg' style={{ backgroundColor: '#165c96' }}>
               {/* Lorem Ipsum Content */}
               <div className='mb-2 mt-4'>
                 <Card.Body>
                   <Card.Title className='text-center text-white display-6 rfs-20 fw-semibold'>
-                    Join MBTAXpress Today{' '}
+                    Join <span style={{ color: 'orange' }}>MBTAExpress</span> Today
                   </Card.Title>
                 </Card.Body>
               </div>
