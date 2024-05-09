@@ -92,9 +92,6 @@ export default function Navbar() {
           >
             <NavDropdown.Item href='/profile'>Profile</NavDropdown.Item>
             <NavDropdown.Item href='/privateUserProfile'>
-              {/* <Nav.Link href='/home' style={{ marginTop: '-25%' }}>
-                Home
-              </Nav.Link> */}
               Settings
             </NavDropdown.Item>
           </NavDropdown>

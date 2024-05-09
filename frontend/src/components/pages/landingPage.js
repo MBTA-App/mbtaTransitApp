@@ -38,16 +38,8 @@ const Landingpage = () => {
               <span style={{ color: 'orange', fontWeight: 'bold' }}>{user.username}</span>
             </h3>
           </div>
-          {/* <div
-            className='d-flex mb-4 flex-column align-items-center justify-content-center mt-4 p-4 rounded-pill mx-auto'
-            style={{ width: '50%' }}
-          >
-            <h1>
-              Welcome back, <span style={{ color: 'blue', fontWeight: 'bold' }}>{user.username}</span>
-            </h1>
-          </div> */}
+          
           <div className='d-flex justify-content-center align-items-center text-center mt-lg-5 mt-md-3 mt-sm-2 mt-1'>
-            {/* <h2 style={{ fontSize: "2em" }}>Explore New Features</h2> */}
 
             <div className='d-flex justify-content-center align-items-center text-center text-md-center px-4 '>
               <div className='card-body p-4'>
@@ -158,9 +150,7 @@ const Landingpage = () => {
                   </Card.Text>
                 </div>
               </Container>
-              {/* <Button href='#' variant='link' className='mt-3' onClick={continueWithoutSignIn}>
-                Continue without signing in
-              </Button> */}
+              
             </div>
           </div>
           <Container style={{ marginTop: '5%' }}>
@@ -174,7 +164,7 @@ const Landingpage = () => {
                   </Card.Title>
                 </Card.Body>
               </div>
-              <Container className='row text-center text-md-center text-white'>
+              <Container className='row text-center text-md-center text-white   '>
                 <div className='col-md-6 mb-4'>
                   <Card.Body>
                     <Card.Text className='lead display-4'>Experience live tracking.&nbsp;</Card.Text>
