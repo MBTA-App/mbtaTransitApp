@@ -164,7 +164,7 @@ const Landingpage = () => {
                   </Card.Title>
                 </Card.Body>
               </div>
-              <Container className='row text-center text-md-center text-white   '>
+              <Container className='row text-center text-md-center text-white'>
                 <div className='col-md-6 mb-4'>
                   <Card.Body>
                     <Card.Text className='lead display-4'>Experience live tracking.&nbsp;</Card.Text>
