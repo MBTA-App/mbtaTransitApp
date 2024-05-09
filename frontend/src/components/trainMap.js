@@ -12,7 +12,7 @@ function Map({ latitude, longitude, stationName }) {
     popupAnchor: [0, -32],
   })
   return (
-    <MapContainer center={[latitude, longitude]} zoom={15} style={{ height: '400px', width: '100%' }}>
+    <MapContainer center={[latitude, longitude]} zoom={15} style={{ height: '400px', width: '100%', zIndex: '1' }}>
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       <Marker position={[latitude, longitude]} icon={stopIcon}>
         <Popup>{stationName}</Popup>

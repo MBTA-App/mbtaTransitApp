@@ -126,10 +126,10 @@ function Stations() {
   }
 
   return (
-    <Container className=''>
+    <Container fluid className=''>
       <Card.Body>
         <Row className='justify-content-center'>
-          <Col xs={18} sm={16} md={14} lg={14} style={{ padding: '1%', marginLeft: '4%' }}>
+          <Col xs={18} sm={16} md={12} lg={15} style={{ padding: '1%' }}>
             <Card className=' mb-4 text-center rounded shadow ' style={{ backgroundColor: '#165c96' }}>
               <header className='jumbotron '>
                 <div className='container'>
@@ -140,9 +140,11 @@ function Stations() {
                 </div>
               </header>
             </Card>
-            <div className='d-flex justify-content-center align-items-center mb-2'>
+          </Col>
+          <Container className='d-flex justify-content-center align-items-center mb-2'>
+            <div className='d-flex flex-wrap justify-content-center'>
               <button
-                className={`text-center btn me-2  ${filterActive ? 'bg-info' : 'bg-info'}`}
+                className={`text-center btn me-2 mb-2 ${filterActive ? 'bg-info' : 'bg-info'}`}
                 onClick={toggleFilter}
                 style={{
                   transition: 'background-color 0.3s',
@@ -154,31 +156,31 @@ function Stations() {
               {!filterActive && (
                 <>
                   <button
-                    className={`btn btn-secondary me-2 ${lineFilter === '' ? 'active' : ''}`}
+                    className={`btn btn-secondary me-2 mb-2 ${lineFilter === '' ? 'active' : ''}`}
                     onClick={() => handleLineFilter('')}
                   >
                     All
                   </button>
                   <button
-                    className={`btn btn-success me-2 ${lineFilter === 'Green' ? 'active' : ''}`}
+                    className={`btn btn-success me-2 mb-2 ${lineFilter === 'Green' ? 'active' : ''}`}
                     onClick={() => handleLineFilter('Green')}
                   >
                     Green Line
                   </button>
                   <button
-                    className={`btn btn-danger me-2 ${lineFilter === 'Red' ? 'active' : ''}`}
+                    className={`btn btn-danger me-2 mb-2 ${lineFilter === 'Red' ? 'active' : ''}`}
                     onClick={() => handleLineFilter('Red')}
                   >
                     Red Line
                   </button>
                   <button
-                    className={`btn btn-primary me-2 ${lineFilter === 'Blue' ? 'active' : ''}`}
+                    className={`btn btn-primary me-2 mb-2 ${lineFilter === 'Blue' ? 'active' : ''}`}
                     onClick={() => handleLineFilter('Blue')}
                   >
                     Blue Line
                   </button>
                   <button
-                    className={`btn btn-warning me-2 ${lineFilter === 'Orange' ? 'active' : ''}`}
+                    className={`btn btn-warning me-2 mb-2 ${lineFilter === 'Orange' ? 'active' : ''}`}
                     onClick={() => handleLineFilter('Orange')}
                   >
                     Orange Line
@@ -186,109 +188,111 @@ function Stations() {
                 </>
               )}
             </div>
-            {renderErrorMessage()}
-            <Row xs={1} md={2} lg={3} xl={3} xxxl={4} className='g-4'>
-              {filterActive
-                ? filteredStations.map(station => (
-                    <Col key={station.id}>
-                      <Link to={`/stations/${station.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <Card
-                          body
-                          outline
-                          color='info'
-                          className='mb-3 mx-auto mt-4 border-0 shadow'
+          </Container>
+
+          {renderErrorMessage()}
+          <Row xs={1} md={2} lg={3} xl={3} xxxl={4} className=''>
+            {filterActive
+              ? filteredStations.map(station => (
+                  <Col key={station.id}>
+                    <Link to={`/stations/${station.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Card
+                        body
+                        outline
+                        color='info'
+                        className='mb-3 mx-auto mt-4 border-0 shadow'
+                        style={{
+                          height: '80%',
+
+                          maxWidth: '90%',
+                          backgroundColor: 'lightgreen',
+                          transition: 'background-color 0.3s',
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'green')}
+                        onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'lightgreen')}
+                      >
+                        <FaStar
                           style={{
-                            height: '100%',
-
-                            maxWidth: '100%',
-                            backgroundColor: 'lightgreen',
-                            transition: 'background-color 0.3s',
+                            fontSize: '2rem',
+                            position: 'absolute',
+                            top: 5,
+                            left: 5,
+                            color: 'yellow',
+                            zIndex: 1, // To place the star above the card content
                           }}
-                          onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'green')}
-                          onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'lightgreen')}
+                        />
+                        <Card.Body
+                          className='d-flex justify-content-center align-items-center flex-column text-center'
+                          style={{ minHeight: '300px', minWidth: '300px' }}
                         >
-                          <FaStar
-                            style={{
-                              fontSize: '2rem',
-                              position: 'absolute',
-                              top: 5,
-                              left: 5,
-                              color: 'yellow',
-                              zIndex: 1, // To place the star above the card content
-                            }}
-                          />
-                          <Card.Body
-                            className='d-flex justify-content-center align-items-center flex-column text-center'
-                            style={{ minHeight: '300px', minWidth: '300px' }}
-                          >
-                            <Card.Title style={{ fontSize: '3.5rem' }}>
-                              <strong>{station.attributes.name}</strong>
-                            </Card.Title>
-                            <Card.Text className='mx-4 text-start border-0 bg-transparent'>
-                              <p className='mt-2'>
-                                <strong>{station.address}</strong>
-                              </p>
+                          <Card.Title style={{ fontSize: '3.5rem' }}>
+                            <strong>{station.attributes.name}</strong>
+                          </Card.Title>
+                          <Card.Text className='mx-4 text-start border-0 bg-transparent'>
+                            <p className='mt-2'>
+                              <strong>{station.address}</strong>
+                            </p>
 
-                              <Card.Text className='d-flex mt-4 justify-content-center align-items-center'>
-                                <span className='ms-4'>
-                                  {station.attributes.wheelchair_boarding === 1 ? (
-                                    <FaWheelchair style={{ fontSize: '3em' }} />
-                                  ) : (
-                                    'Inaccessible'
-                                  )}
-                                </span>
-                              </Card.Text>
+                            <Card.Text className='d-flex mt-4 justify-content-center align-items-center'>
+                              <span className='ms-4'>
+                                {station.attributes.wheelchair_boarding === 1 ? (
+                                  <FaWheelchair style={{ fontSize: '3em' }} />
+                                ) : (
+                                  'Inaccessible'
+                                )}
+                              </span>
                             </Card.Text>
-                          </Card.Body>
-                        </Card>
-                      </Link>
-                    </Col>
-                  ))
-                : filteredStationsToShow.map(station => (
-                    <Col key={station.id}>
-                      <Link to={`/stations/${station.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <Card
-                          body
-                          outline
-                          className={`mb-3 mx-auto mt-4 border-0 shadow ${
-                            filterActive && lineFilter === '' ? 'filtered-card' : ''
-                          } ${lineFilter ? lineFilter.toLowerCase() + '-card' : 'default-card'}`}
-                          style={{
-                            height: '90%',
-                            maxWidth: '100%',
-                            transition: 'background-color 0.3s',
-                            backgroundColor: 'grey',
-                          }}
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                ))
+              : filteredStationsToShow.map(station => (
+                  <Col key={station.id}>
+                    <Link to={`/stations/${station.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Card
+                        body
+                        outline
+                        className={`mb-3 mx-auto mt-4 border-0 shadow ${
+                          filterActive && lineFilter === '' ? 'filtered-card' : ''
+                        } ${lineFilter ? lineFilter.toLowerCase() + '-card' : 'default-card'}`}
+                        style={{
+                          height: '80%',
+
+                          maxWidth: '90%',
+                          transition: 'background-color 0.3s',
+                          backgroundColor: 'grey',
+                        }}
+                      >
+                        <Card.Body
+                          className='d-flex justify-content-center align-items-center flex-column text-center'
+                          style={{ minHeight: '100%', minWidth: '50%' }}
                         >
-                          <Card.Body
-                            className='d-flex justify-content-center align-items-center flex-column text-center'
-                            style={{ minHeight: '300px', minWidth: '300px' }}
-                          >
-                            <Card.Title style={{ fontSize: '3rem' }}>
-                              <strong>{station.attributes.name}</strong>
-                            </Card.Title>
-                            <Card.Text className='mx-4 text-start border-0 bg-transparent'>
-                              <p className='mt-2'>
-                                <strong>{station.address}</strong>
-                              </p>
+                          <Card.Title style={{ fontSize: '3rem' }}>
+                            <strong>{station.attributes.name}</strong>
+                          </Card.Title>
+                          <Card.Text className='mx-4 text-center border-0 bg-transparent'>
+                            <p className='mt-2'>
+                              <strong>{station.address}</strong>
+                            </p>
 
-                              <Card.Text className='d-flex mt-4 justify-content-center align-items-center'>
-                                <span className='ms-4'>
-                                  {station.attributes.wheelchair_boarding === 1 ? (
-                                    <FaWheelchair style={{ fontSize: '3em' }} />
-                                  ) : (
-                                    'Inaccessible'
-                                  )}
-                                </span>
-                              </Card.Text>
+                            <Card.Text className='d-flex mt-4  justify-content-center align-items-center'>
+                              <span className='ms-4'>
+                                {station.attributes.wheelchair_boarding === 1 ? (
+                                  <FaWheelchair className='mb-4' style={{ fontSize: '3em' }} />
+                                ) : (
+                                  'Inaccessible'
+                                )}
+                              </span>
                             </Card.Text>
-                          </Card.Body>
-                        </Card>
-                      </Link>
-                    </Col>
-                  ))}
-            </Row>
-          </Col>
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                ))}
+          </Row>
         </Row>
       </Card.Body>
     </Container>
