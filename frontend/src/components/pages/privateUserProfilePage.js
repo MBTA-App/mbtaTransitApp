@@ -36,10 +36,7 @@ const PrivateUserProfile = () => {
         <h1>{user && user.username}</h1>
         <div className='col-md-12 text-center'>
           <>
-            {/* Use Link to navigate to EditUserPage
-            <Link to='/user/editUser' className='btn btn-primary mx-4'>
-              Edit User
-            </Link> */}
+          
             <div className='container d-flex align-items-center justify-content-center mt-4 mb-4'>
               <EditUserPage />
             </div>
